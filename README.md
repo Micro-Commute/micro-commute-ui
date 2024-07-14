@@ -10,3 +10,9 @@ Run the site at http://localhost:8000.
 ```shell
 npm run develop
 ```
+
+## Run Storybook
+Run the Storybook at http://localhost:6006.
+```shell
+npm run storybook
+```
