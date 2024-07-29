@@ -1,5 +1,3 @@
-import React from 'react';
-import { Meta, Story } from '@storybook/react';
 import HelloWorld from './HelloWorld';
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
