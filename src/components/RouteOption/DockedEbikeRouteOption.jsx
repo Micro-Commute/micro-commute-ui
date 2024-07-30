@@ -53,6 +53,8 @@ DockedEbikeRouteOption.propTypes = {
   onDockingStationChange: PropTypes.func.isRequired,
 };
 
+DockedEbikeRouteOption.TYPE = "docked-ebike";
+
 function DockingStationSelector({ label, value, options, onChange, style }) {
   return (
     <div style={style}>
