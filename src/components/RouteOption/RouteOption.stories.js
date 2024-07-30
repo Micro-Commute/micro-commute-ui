@@ -1,14 +1,15 @@
-import DockedEbikeRouteOption from "./DockedEbikeRouteOption";
+import RouteOption from "./RouteOption";
 import { fn } from "@storybook/test";
 
 export default {
   title: "Components/RouteOption",
-  component: DockedEbikeRouteOption,
+  component: RouteOption,
   tags: ["autodocs"],
 };
 
-export const Default = {
+export const DockedEbike = {
   args: {
+    type: "docked-ebike",
     provider: { name: "Some provider" },
     fromDockingStations: [
       { value: "foo", label: "Foo street, 123" },
@@ -20,8 +21,9 @@ export const Default = {
   },
 };
 
-export const Empty = {
+export const DockedEbikeEmpty = {
   args: {
+    type: "docked-ebike",
     provider: { name: "Some provider" },
     fromDockingStations: [],
     toDockingStations: [],
