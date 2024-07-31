@@ -1,4 +1,5 @@
 import * as React from "react"
+import RouteMap from "../components/RouteMap/RouteMap";
 
 const pageStyles = {
   color: "#232129",
@@ -28,6 +29,7 @@ const IndexPage = () => {
       <p style={paragraphStyles}>
         Solving the first and last mile problem for urban commuters.
       </p>
+      <RouteMap/>
     </main>
   )
 }
