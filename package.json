@@ -18,6 +18,8 @@
   },
   "dependencies": {
     "@esri/react-arcgis": "^5.2.0",
+    "esri-leaflet": "^3.0.12",
+    "esri-leaflet-geocoder": "^3.1.4",
     "gatsby": "^5.13.5",
     "gatsby-plugin-sass": "^6.13.1",
     "leaflet": "^1.9.4",
