@@ -21,6 +21,7 @@
     "gatsby": "^5.13.5",
     "gatsby-plugin-sass": "^6.13.1",
     "leaflet": "^1.9.4",
+    "leaflet-geosearch": "^4.0.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-leaflet": "^4.2.1",
