@@ -9,3 +9,9 @@ export default {
 const Template = (args) => <LocationInput {...args} />;
 
 export const Default = Template.bind({});
+Default.args = {
+  onLocationChange: (location) => {
+    console.log('Location changed:', location);
+  },
+};
+

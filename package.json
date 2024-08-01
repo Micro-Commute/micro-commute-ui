@@ -18,6 +18,8 @@
   },
   "dependencies": {
     "@esri/react-arcgis": "^5.2.0",
+    "@fortawesome/fontawesome-free": "^6.6.0",
+    "@fortawesome/react-fontawesome": "^0.2.2",
     "esri-leaflet": "^3.0.12",
     "esri-leaflet-geocoder": "^3.1.4",
     "gatsby": "^5.13.5",
