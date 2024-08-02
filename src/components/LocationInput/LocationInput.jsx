@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import { OpenStreetMapProvider } from 'leaflet-geosearch';
 
 import 'leaflet/dist/leaflet.css';
 import 'leaflet-geosearch/dist/geosearch.css';
 import PropTypes from "prop-types";
 
-export default function LocationInput({onLocationChange}) {
+export default function LocationInput({onLocationChange, searchDelayMillis = 500}) {
   const [address, setAddress] = useState('');
   const [results, setResults] = useState([]);
   const provider = new OpenStreetMapProvider();
@@ -14,12 +14,15 @@ export default function LocationInput({onLocationChange}) {
     setAddress(event.target.value);
   };
 
-  const handleTextInputKeyDown = (event) => {
-    if (event.key === "Enter") {
-      provider
-        .search({query: address})
-        .then(setResults)
-    }
+  useEffect(() => {
+    const func = setTimeout(searchAddress, searchDelayMillis);
+    return () => clearTimeout(func)
+  }, [address])
+
+  function searchAddress() {
+    provider
+      .search({query: address})
+      .then(setResults)
   }
 
   const handleResultClick = (result) => {
@@ -36,7 +39,6 @@ export default function LocationInput({onLocationChange}) {
         placeholder="Enter address"
         value={address}
         onChange={handleTextInputChange}
-        onKeyDown={handleTextInputKeyDown}
       />
       {results.length > 0 && (
         <ol style={{display: "block"}}>
@@ -53,4 +55,5 @@ export default function LocationInput({onLocationChange}) {
 
 LocationInput.propTypes = {
   onLocationChange: PropTypes.func.isRequired,
+  searchDelayMillis: PropTypes.number.isRequired,
 }
