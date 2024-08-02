@@ -8,13 +8,19 @@ import PropTypes from "prop-types";
 export default function LocationInput({onLocationChange}) {
   const [address, setAddress] = useState('');
   const [results, setResults] = useState([]);
-
   const provider = new OpenStreetMapProvider();
 
-  const handleSearch = async () => {
-    const results = await provider.search({ query: address });
-    setResults(results);
+  const handleTextInputChange = (event) => {
+    setAddress(event.target.value);
   };
+
+  const handleTextInputKeyDown = (event) => {
+    if (event.key === "Enter") {
+      provider
+        .search({query: address})
+        .then(setResults)
+    }
+  }
 
   const handleResultClick = (result) => {
     const { x, y, label } = result;
@@ -29,11 +35,9 @@ export default function LocationInput({onLocationChange}) {
         type="text"
         placeholder="Enter address"
         value={address}
-        onChange={(e) => setAddress(e.target.value)}
+        onChange={handleTextInputChange}
+        onKeyDown={handleTextInputKeyDown}
       />
-      <button onClick={handleSearch} style={{ backgroundColor: 'white', color: 'blue' }}>
-        Search
-      </button>
       {results.length > 0 && (
         <div>
           {results.map((result, index) => (
