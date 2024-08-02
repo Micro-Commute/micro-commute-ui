@@ -1,17 +1,15 @@
 import React from 'react';
 import LocationInput from './LocationInput';
+import {fn} from "@storybook/test";
 
 export default {
   title: 'Components/LocationInput',
   component: LocationInput,
+  tags: ["autodocs"],
 };
 
-const Template = (args) => <LocationInput {...args} />;
-
-export const Default = Template.bind({});
-Default.args = {
-  onLocationChange: (location) => {
-    console.log('Location changed:', location);
-  },
+export const Default = {
+  args: {
+    onLocationChange: fn(),
+  }
 };
-
