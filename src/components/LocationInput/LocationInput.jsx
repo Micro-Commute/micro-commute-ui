@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 import { OpenStreetMapProvider } from 'leaflet-geosearch';
 
 import 'leaflet/dist/leaflet.css';
-import 'leaflet-geosearch/dist/geosearch.css';   
+import 'leaflet-geosearch/dist/geosearch.css';
+import PropTypes from "prop-types";
 
-const LocationInput = ({ onLocationChange }) => {
+export default function LocationInput({onLocationChange}) {
   const [address, setAddress] = useState('');
   const [results, setResults] = useState([]);
 
@@ -44,6 +45,8 @@ const LocationInput = ({ onLocationChange }) => {
       )}
     </div>
   );
-};
+}
 
-export default LocationInput;
+LocationInput.propTypes = {
+  onLocationChange: PropTypes.func.isRequired,
+}
