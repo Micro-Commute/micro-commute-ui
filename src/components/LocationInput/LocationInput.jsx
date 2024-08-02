@@ -24,7 +24,7 @@ export default function LocationInput({onLocationChange}) {
   };
 
   return (
-    <div className="location-input">
+    <div>
       <input
         type="text"
         placeholder="Enter address"
@@ -35,7 +35,7 @@ export default function LocationInput({onLocationChange}) {
         Search
       </button>
       {results.length > 0 && (
-        <div className="results">
+        <div>
           {results.map((result, index) => (
             <div key={index} onClick={() => handleResultClick(result)}>
               {result.label}
