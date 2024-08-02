@@ -39,13 +39,13 @@ export default function LocationInput({onLocationChange}) {
         onKeyDown={handleTextInputKeyDown}
       />
       {results.length > 0 && (
-        <div>
+        <ol style={{display: "block"}}>
           {results.map((result, index) => (
-            <div key={index} onClick={() => handleResultClick(result)}>
+            <li key={index} onClick={() => handleResultClick(result)}>
               {result.label}
-            </div>
+            </li>
           ))}
-        </div>
+        </ol>
       )}
     </div>
   );
