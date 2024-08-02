@@ -1,69 +1,59 @@
-import React, { useState } from 'react';
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
-import { GeoSearchControl, OpenStreetMapProvider } from 'leaflet-geosearch';   
+import React, {useEffect, useState} from 'react';
+import { OpenStreetMapProvider } from 'leaflet-geosearch';
 
 import 'leaflet/dist/leaflet.css';
-import 'leaflet-geosearch/dist/geosearch.css';   
+import 'leaflet-geosearch/dist/geosearch.css';
+import PropTypes from "prop-types";
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSearch, faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons';   
-
-const LocationInput = ({ onLocationChange }) => {
+export default function LocationInput({onLocationChange, searchDelayMillis = 500}) {
   const [address, setAddress] = useState('');
   const [results, setResults] = useState([]);
-  const [selectedLocation, setSelectedLocation] = useState(null);
-
   const provider = new OpenStreetMapProvider();
 
-  const handleSearch = async () => {
-    const results = await provider.search({ query: address });
-    setResults(results);
+  const handleTextInputChange = (event) => {
+    setAddress(event.target.value);
   };
+
+  useEffect(() => {
+    const func = setTimeout(searchAddress, searchDelayMillis);
+    return () => clearTimeout(func)
+  }, [address])
+
+  function searchAddress() {
+    provider
+      .search({query: address})
+      .then(setResults)
+  }
 
   const handleResultClick = (result) => {
     const { x, y, label } = result;
-    setSelectedLocation({ lat: y, lng: x });
     setResults([]);
     setAddress(label);
     onLocationChange({ address: label, coordinates: { lat: y, lng: x } });
   };
 
   return (
-    <div className="location-input">
+    <div>
       <input
         type="text"
         placeholder="Enter address"
         value={address}
-        onChange={(e) => setAddress(e.target.value)}
+        onChange={handleTextInputChange}
       />
-      <button onClick={handleSearch} style={{ backgroundColor: 'white', color: 'blue' }}>
-        <FontAwesomeIcon icon={faSearch} />
-      </button>
       {results.length > 0 && (
-        <div className="results">
+        <ol style={{display: "block"}}>
           {results.map((result, index) => (
-            <div key={index} onClick={() => handleResultClick(result)}>
-              <FontAwesomeIcon icon={faMapMarkerAlt} style={{ color: 'black' }} />
+            <li key={index} onClick={() => handleResultClick(result)}>
               {result.label}
-            </div>
+            </li>
           ))}
-        </div>
-      )}
-      {selectedLocation && (
-        <MapContainer center={[selectedLocation.lat, selectedLocation.lng]} zoom={13} style={{ height: '400px', width: '100%' }}>
-          <TileLayer
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          />
-          <Marker position={[selectedLocation.lat, selectedLocation.lng]}>
-            <Popup>
-              {address}
-            </Popup>
-          </Marker>
-        </MapContainer>
+        </ol>
       )}
     </div>
   );
-};
+}
 
-export default LocationInput;
-
+LocationInput.propTypes = {
+  onLocationChange: PropTypes.func.isRequired,
+  searchDelayMillis: PropTypes.number.isRequired,
+}
