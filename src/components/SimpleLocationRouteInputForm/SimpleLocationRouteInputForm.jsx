@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from "prop-types";
-import LocationInput from './LocationInput';
+import LocationInput from '../LocationInput';
 
 const SimpleLocationRouteInputForm = ({ onStartingPointChange, onDestinationChange }) => {
   return (
