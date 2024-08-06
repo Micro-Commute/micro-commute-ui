@@ -5,7 +5,7 @@ import 'leaflet/dist/leaflet.css';
 import 'leaflet-geosearch/dist/geosearch.css';
 import PropTypes from "prop-types";
 
-export default function LocationInput({onLocationChange, searchDelayMillis = 500}) {
+export default function LocationInput({onLocationChange, searchDelayMillis}) {
   const [address, setAddress] = useState('');
   const [results, setResults] = useState([]);
   const provider = new OpenStreetMapProvider();
@@ -56,4 +56,8 @@ export default function LocationInput({onLocationChange, searchDelayMillis = 500
 LocationInput.propTypes = {
   onLocationChange: PropTypes.func.isRequired,
   searchDelayMillis: PropTypes.number.isRequired,
+}
+
+LocationInput.defaultProps = {
+  searchDelayMillis: 500,
 }
