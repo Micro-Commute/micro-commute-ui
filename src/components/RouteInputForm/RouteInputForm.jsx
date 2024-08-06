@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from "prop-types";
 import LocationInput from '../LocationInput/LocationInput';
 
-const SimpleLocationRouteInputForm = ({ onStartingPointChange, onDestinationChange }) => {
+const RouteInputForm = ({ onStartingPointChange, onDestinationChange }) => {
   return (
     <form>
       <div>
@@ -17,10 +17,10 @@ const SimpleLocationRouteInputForm = ({ onStartingPointChange, onDestinationChan
   );
 }
 
-SimpleLocationRouteInputForm.propTypes = {
+RouteInputForm.propTypes = {
   onStartingPointChange: PropTypes.func.isRequired,
   onDestinationChange: PropTypes.func.isRequired,
 }
 
-export default SimpleLocationRouteInputForm;
+export default RouteInputForm;
 

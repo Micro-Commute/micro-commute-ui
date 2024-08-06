@@ -1,10 +1,10 @@
 import React from 'react';
-import SimpleLocationRouteInputForm from './SimpleLocationRouteInputForm';
+import RouteInputForm from './RouteInputForm';
 import { fn } from '@storybook/test';
 
 export default {
-  title: 'Components/SimpleLocationRouteInputForm',
-  component: SimpleLocationRouteInputForm,
+  title: 'Components/RouteInputForm',
+  component: RouteInputForm,
   tags: ['autodocs'],
 };
 
@@ -14,4 +14,3 @@ export const Default = {
     onDestinationChange: fn(),
   },
 };
-
