@@ -8,6 +8,7 @@ import PropTypes from "prop-types";
 export default function LocationInput({onLocationChange, searchDelayMillis}) {
   const [address, setAddress] = useState('');
   const [results, setResults] = useState([]);
+  const [focus, setFocus] = useState(false);
   const provider = new OpenStreetMapProvider();
 
   const handleTextInputChange = (event) => {
@@ -15,9 +16,11 @@ export default function LocationInput({onLocationChange, searchDelayMillis}) {
   };
 
   useEffect(() => {
-    const func = setTimeout(searchAddress, searchDelayMillis);
-    return () => clearTimeout(func)
-  }, [address])
+    if (focus && address) {
+      const func = setTimeout(searchAddress, searchDelayMillis);
+      return () => clearTimeout(func);
+    }
+  }, [focus, address])
 
   function searchAddress() {
     provider
@@ -39,6 +42,8 @@ export default function LocationInput({onLocationChange, searchDelayMillis}) {
         placeholder="Enter address"
         value={address}
         onChange={handleTextInputChange}
+        onBlur={() => setFocus(false)}
+        onFocus={() => setFocus(true)}
       />
       {results.length > 0 && (
         <ol style={{display: "block"}}>
