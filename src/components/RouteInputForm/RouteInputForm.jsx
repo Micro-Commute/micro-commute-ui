@@ -4,8 +4,7 @@ import LocationInput from '../LocationInput/LocationInput';
 
 const SimpleLocationRouteInputForm = ({ onStartingPointChange, onDestinationChange }) => {
   return (
-    <div>
-      <h2>Simple Location Route Input Form</h2>
+    <form>
       <div>
         <label>Starting Point:</label>
         <LocationInput onLocationChange={onStartingPointChange} />
@@ -14,7 +13,7 @@ const SimpleLocationRouteInputForm = ({ onStartingPointChange, onDestinationChan
         <label>Destination:</label>
         <LocationInput onLocationChange={onDestinationChange} />
       </div>
-    </div>
+    </form>
   );
 }
 
