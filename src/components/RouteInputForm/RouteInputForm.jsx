@@ -23,4 +23,3 @@ RouteInputForm.propTypes = {
 }
 
 export default RouteInputForm;
-

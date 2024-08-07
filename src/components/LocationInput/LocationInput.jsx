@@ -1,11 +1,17 @@
 import React, {useEffect, useState} from 'react';
-import { OpenStreetMapProvider } from 'leaflet-geosearch';
 
 import 'leaflet/dist/leaflet.css';
 import 'leaflet-geosearch/dist/geosearch.css';
 import PropTypes from "prop-types";
+import {OpenStreetMapProvider} from "leaflet-geosearch";
+import {isDomAvailable} from "../../lib/util";
 
 export default function LocationInput({onLocationChange, searchDelayMillis}) {
+  if (!isDomAvailable()) {
+    // Leaflet-geosearch not available with SSR
+    return <></>;
+  }
+
   const [address, setAddress] = useState('');
   const [results, setResults] = useState([]);
   const [focus, setFocus] = useState(false);
