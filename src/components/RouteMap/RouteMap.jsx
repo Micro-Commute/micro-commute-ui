@@ -4,6 +4,7 @@ import "leaflet/dist/leaflet.css"
 import {isDomAvailable} from "../../lib/util";
 import {RoutePropType} from "../../lib/route";
 import DockedEbikeRouteMapFragment from "./DockedEbikeRouteMapFragment";
+import Style from "react-style-proptype";
 
 export default function RouteMap(props) {
   if (!isDomAvailable()) {
@@ -11,7 +12,7 @@ export default function RouteMap(props) {
   }
 
   return (
-    <MapContainer style={{ height: "400px" }} center={[51.505, -0.09]} zoom={13} scrollWheelZoom={false}>
+    <MapContainer style={props.style} center={[51.505, -0.09]} zoom={13} scrollWheelZoom={false}>
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -35,4 +36,11 @@ RouteMapFragment.propTypes = {
 
 RouteMap.propTypes = {
   route: RoutePropType,
+  style: Style,
+};
+
+RouteMap.defaultProps = {
+  style: {
+    height: "400px",
+  }
 };
