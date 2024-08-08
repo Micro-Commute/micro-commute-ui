@@ -12,7 +12,10 @@ export const Default = {
     routeOptionProps: [
       {
         type: "docked-ebike",
-        provider: { name: "Some provider" },
+        provider: {
+          id: "some-provider",
+          name: "Some provider",
+        },
         fromDockingStations: [
           { value: "foo", label: "Foo street, 123" },
           { value: "bar", label: "Bar street, 123" },
@@ -23,7 +26,10 @@ export const Default = {
       },
       {
         type: "docked-ebike",
-        provider: { name: "Other provider" },
+        provider: {
+          id: "other-provider",
+          name: "Some provider",
+        },
         fromDockingStations: [
           { value: "lorem", label: "Lorem street, 123" },
           { value: "ipsum", label: "Ipsum street, 123" },
@@ -33,5 +39,6 @@ export const Default = {
         onDockingStationChange: fn(),
       }
     ],
+    onRouteOptionSelected: fn(),
   },
 };
