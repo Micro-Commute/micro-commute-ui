@@ -3,10 +3,15 @@ import PropTypes from "prop-types";
 import Style from "react-style-proptype";
 
 export default function DockedEbikeRouteOption(props) {
-  let stationCount =
+  const stationCount =
     props.fromDockingStations.length + props.toDockingStations.length;
+
+  const style = {
+    backgroundColor: props.isSelected ? "cyan" : "inherit",
+  };
+
   return (
-    <article>
+    <article onClick={props.onClick} style={style}>
       <header>
         <h1>{props.provider.name}</h1>
       </header>
@@ -51,6 +56,12 @@ DockedEbikeRouteOption.propTypes = {
     }),
   ),
   onDockingStationChange: PropTypes.func.isRequired,
+  isSelected: PropTypes.bool.isRequired,
+  onClick: PropTypes.func,
+};
+
+DockedEbikeRouteOption.defaultProps = {
+  isSelected: false,
 };
 
 DockedEbikeRouteOption.TYPE = "docked-ebike";
