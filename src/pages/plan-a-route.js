@@ -4,7 +4,6 @@ import RouteInputForm from "../components/RouteInputForm/RouteInputForm";
 import RouteOptionList from "../components/RouteOptionList/RouteOptionList";
 import { fn } from "@storybook/test";
 import { gql, useQuery } from "@apollo/client";
-import {Default as RouteMapStory} from "./__stories__/plan-a-route.stories";
 
 export const LIST_ROUTE_OPTIONS_QUERY = gql`
   query ListRouteOptions(
@@ -86,7 +85,7 @@ export default function PlanARoutePage() {
         />
         <SidebarContent />
       </aside>
-      <RouteMap style={{ height: "100%" }} route={RouteMapStory.args.route}/>
+      <RouteMap style={{ height: "100%" }}/>
     </main>
   );
 }
