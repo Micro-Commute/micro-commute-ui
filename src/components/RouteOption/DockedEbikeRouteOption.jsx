@@ -41,6 +41,7 @@ export default function DockedEbikeRouteOption(props) {
 
 DockedEbikeRouteOption.propTypes = {
   provider: PropTypes.shape({
+    id: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
   }),
   fromDockingStations: PropTypes.arrayOf(

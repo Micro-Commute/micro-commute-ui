@@ -5,9 +5,9 @@ import RouteOption from "../RouteOption/RouteOption";
 export default function RouteOptionList({routeOptionProps, onRouteOptionSelected}) {
   const [selectedIndex, setSelectedIndex] = useState(null);
 
-  const handleOptionClick = (index, providerId, routeType) => {
+  const handleOptionClick = (index, provider, routeType) => {
     setSelectedIndex(index);
-    onRouteOptionSelected(providerId, routeType);
+    onRouteOptionSelected(provider.id, routeType);
   };
 
   return (
@@ -16,7 +16,7 @@ export default function RouteOptionList({routeOptionProps, onRouteOptionSelected
         <RouteOption
           {...props}
           isSelected={index === selectedIndex}
-          onClick={() => handleOptionClick(index, props.provider.name, props.type)}
+          onClick={() => handleOptionClick(index, props.provider, props.type)}
         />
       ))}
     </div>
