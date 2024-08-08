@@ -8,6 +8,7 @@ const config = {
     "@storybook/addon-essentials",
     "@chromatic-com/storybook",
     "@storybook/addon-interactions",
+    "storybook-addon-apollo-client",
   ],
   framework: {
     name: "@storybook/react-webpack5",

@@ -38,7 +38,7 @@ export default function LocationInput({onLocationChange, searchDelayMillis}) {
     const { x, y, label } = result;
     setResults([]);
     setAddress(label);
-    onLocationChange({ address: label, coordinates: { lat: y, lng: x } });
+    onLocationChange({ address: label, coordinates: { latitude: y, longitude: x } });
   };
 
   return (
