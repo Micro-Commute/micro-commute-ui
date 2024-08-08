@@ -57,7 +57,7 @@ DockedEbikeRouteOption.propTypes = {
   ),
   onDockingStationChange: PropTypes.func.isRequired,
   isSelected: PropTypes.bool.isRequired,
-  onClick: PropTypes.func,
+  onClick: PropTypes.func.isRequired,
 };
 
 DockedEbikeRouteOption.defaultProps = {

@@ -19,6 +19,7 @@ export const DockedEbike = {
     toDockingStations: [{ value: "qux", label: "Qux street, 123" }],
     onDockingStationChange: fn(),
     isSelected: false,
+    onClick: fn(),
   },
 };
 
@@ -30,6 +31,7 @@ export const DockedEbikeEmpty = {
     toDockingStations: [],
     onDockingStationChange: fn(),
     isSelected: false,
+    onClick: fn(),
   },
 };
 
@@ -45,5 +47,6 @@ export const DockedEbikeSelected = {
     toDockingStations: [{ value: "qux", label: "Qux street, 123" }],
     onDockingStationChange: fn(),
     isSelected: true,
+    onClick: fn(),
   },
 };
