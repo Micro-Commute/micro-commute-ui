@@ -7,14 +7,15 @@ import {OpenStreetMapProvider} from "leaflet-geosearch";
 import {isDomAvailable} from "../../lib/util";
 
 export default function LocationInput({onLocationChange, searchDelayMillis}) {
+  const [address, setAddress] = useState('');
+  const [results, setResults] = useState([]);
+  const [focus, setFocus] = useState(false);
+
   if (!isDomAvailable()) {
     // Leaflet-geosearch not available with SSR
     return <></>;
   }
 
-  const [address, setAddress] = useState('');
-  const [results, setResults] = useState([]);
-  const [focus, setFocus] = useState(false);
   const provider = new OpenStreetMapProvider();
 
   const handleTextInputChange = (event) => {
