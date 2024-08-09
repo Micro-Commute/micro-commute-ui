@@ -6,7 +6,7 @@ export const CoordinatesPropType = PropTypes.shape({
 });
 
 export const DockedEbikeRoutePropType = PropTypes.shape({
-  type: "docked-ebike",
+  type: PropTypes.oneOf(["docked-ebike"]),
   startingPoint: CoordinatesPropType.isRequired,
   destination: CoordinatesPropType.isRequired,
   startingPointDockingStation: CoordinatesPropType.isRequired,

@@ -110,8 +110,8 @@ function createRouteOptionProps(data) {
 
 function createDockedEbikeRouteOptionProps(data) {
   const mapDockingStation = (station) => ({
-    value: station["id"],
-    label: station["name"],
+    id: station["id"],
+    name: station["name"],
   });
 
   return {
