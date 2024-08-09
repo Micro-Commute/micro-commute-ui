@@ -11,6 +11,13 @@ export default function LocationInput({onLocationChange, searchDelayMillis}) {
   const [results, setResults] = useState([]);
   const [focus, setFocus] = useState(false);
 
+  useEffect(() => {
+    if (focus && address) {
+      const func = setTimeout(searchAddress, searchDelayMillis);
+      return () => clearTimeout(func);
+    }
+  }, [focus, address])
+
   if (!isDomAvailable()) {
     // Leaflet-geosearch not available with SSR
     return <></>;
@@ -21,13 +28,6 @@ export default function LocationInput({onLocationChange, searchDelayMillis}) {
   const handleTextInputChange = (event) => {
     setAddress(event.target.value);
   };
-
-  useEffect(() => {
-    if (focus && address) {
-      const func = setTimeout(searchAddress, searchDelayMillis);
-      return () => clearTimeout(func);
-    }
-  }, [focus, address])
 
   function searchAddress() {
     provider
