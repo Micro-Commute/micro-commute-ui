@@ -1,4 +1,4 @@
-import PlanATripPage, {LIST_ROUTE_OPTIONS_QUERY} from "../plan-a-trip";
+import PlanATripPage, { LIST_ROUTE_OPTIONS_QUERY } from "../plan-a-trip";
 
 export default {
   title: "Pages/PlanATrip",
@@ -6,8 +6,7 @@ export default {
 };
 
 export const Default = {
-  args: {
-  },
+  args: {},
 };
 
 Default.parameters = {
@@ -20,85 +19,86 @@ Default.parameters = {
         },
         variableMatcher: (variables) => true,
         maxUsageCount: Number.POSITIVE_INFINITY,
+        delay: 500,
         result: {
           data: {
-            "listRouteOptions": [
+            listRouteOptions: [
               {
-                "__typename": "DockedEBikeRouteOption",
-                "provider": {
-                  "__typename": "Provider",
-                  "id": "tfl-santander-cycles",
-                  "name": "Santander Cycles"
+                __typename: "DockedEBikeRouteOption",
+                provider: {
+                  __typename: "Provider",
+                  id: "tfl-santander-cycles",
+                  name: "Santander Cycles",
                 },
-                "fromDockingStations": [
+                fromDockingStations: [
                   {
-                    "__typename": "DockingStation",
-                    "id": "300249",
-                    "name": "Westminster Pier, Westminster",
-                    "location": {
-                      "__typename": "Coordinates",
-                      "longitude": -0.12382322,
-                      "latitude": 51.501513
-                    }
+                    __typename: "DockingStation",
+                    id: "300249",
+                    name: "Westminster Pier, Westminster",
+                    location: {
+                      __typename: "Coordinates",
+                      longitude: -0.12382322,
+                      latitude: 51.501513,
+                    },
                   },
                   {
-                    "__typename": "DockingStation",
-                    "id": "200231",
-                    "name": "Abingdon Green, Westminster",
-                    "location": {
-                      "__typename": "Coordinates",
-                      "longitude": -0.12597218,
-                      "latitude": 51.49764
-                    }
+                    __typename: "DockingStation",
+                    id: "200231",
+                    name: "Abingdon Green, Westminster",
+                    location: {
+                      __typename: "Coordinates",
+                      longitude: -0.12597218,
+                      latitude: 51.49764,
+                    },
                   },
                   {
-                    "__typename": "DockingStation",
-                    "id": "200202",
-                    "name": "Storey's Gate, Westminster",
-                    "location": {
-                      "__typename": "Coordinates",
-                      "longitude": -0.129698963,
-                      "latitude": 51.50070305
-                    }
-                  }
+                    __typename: "DockingStation",
+                    id: "200202",
+                    name: "Storey's Gate, Westminster",
+                    location: {
+                      __typename: "Coordinates",
+                      longitude: -0.129698963,
+                      latitude: 51.50070305,
+                    },
+                  },
                 ],
-                "toDockingStations": [
+                toDockingStations: [
                   {
-                    "__typename": "DockingStation",
-                    "id": "001071",
-                    "name": "Tower Gardens , Tower",
-                    "location": {
-                      "__typename": "Coordinates",
-                      "longitude": -0.075459482,
-                      "latitude": 51.50950627
-                    }
+                    __typename: "DockingStation",
+                    id: "001071",
+                    name: "Tower Gardens , Tower",
+                    location: {
+                      __typename: "Coordinates",
+                      longitude: -0.075459482,
+                      latitude: 51.50950627,
+                    },
                   },
                   {
-                    "__typename": "DockingStation",
-                    "id": "000991",
-                    "name": "Crosswall, Tower",
-                    "location": {
-                      "__typename": "Coordinates",
-                      "longitude": -0.077121322,
-                      "latitude": 51.51159481
-                    }
+                    __typename: "DockingStation",
+                    id: "000991",
+                    name: "Crosswall, Tower",
+                    location: {
+                      __typename: "Coordinates",
+                      longitude: -0.077121322,
+                      latitude: 51.51159481,
+                    },
                   },
                   {
-                    "__typename": "DockingStation",
-                    "id": "200049",
-                    "name": "St. Katharine's Way, Tower",
-                    "location": {
-                      "__typename": "Coordinates",
-                      "longitude": -0.070542,
-                      "latitude": 51.505697
-                    }
-                  }
-                ]
-              }
-            ]
+                    __typename: "DockingStation",
+                    id: "200049",
+                    name: "St. Katharine's Way, Tower",
+                    location: {
+                      __typename: "Coordinates",
+                      longitude: -0.070542,
+                      latitude: 51.505697,
+                    },
+                  },
+                ],
+              },
+            ],
           },
         },
       },
-    ]
-  }
-}
+    ],
+  },
+};

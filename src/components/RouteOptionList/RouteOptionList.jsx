@@ -1,22 +1,39 @@
-import React, {useState} from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import RouteOption from "../RouteOption/RouteOption";
+import { RouteOptionPropType, RoutePropType } from "../../lib/types";
 
-export default function RouteOptionList({routeOptionProps, onRouteOptionSelected}) {
-  const [selectedIndex, setSelectedIndex] = useState(0);
+export default function RouteOptionList({
+  routeOptions,
+  activeRoute,
+  setActiveRoute,
+}) {
+  function isSelected(routeOption) {
+    return (
+      routeOption.provider.id === activeRoute.providerId &&
+      routeOption.transportType === activeRoute.transportType
+    );
+  }
 
-  const handleOptionClick = (index, provider, routeType) => {
-    setSelectedIndex(index);
-    onRouteOptionSelected(provider.id, routeType);
-  };
+  function selectRoute(routeOption) {
+    setActiveRoute((activeRoute) => ({
+      ...activeRoute,
+      providerId: routeOption.provider.id,
+      transportType: routeOption.transportType,
+    }));
+  }
 
   return (
     <div>
-      {routeOptionProps.map((props, index) => (
+      {routeOptions.map((routeOption) => (
         <RouteOption
-          {...props}
-          isSelected={index === selectedIndex}
-          onClick={() => handleOptionClick(index, props.provider, props.type)}
+          routeOption={routeOption}
+          isSelected={isSelected(routeOption)}
+          select={() => {
+            if (!isSelected(routeOption)) {
+              selectRoute(routeOption);
+            }
+          }}
         />
       ))}
     </div>
@@ -24,6 +41,7 @@ export default function RouteOptionList({routeOptionProps, onRouteOptionSelected
 }
 
 RouteOptionList.propTypes = {
-  routeOptionProps: PropTypes.arrayOf(PropTypes.shape(RouteOption.propTypes)),
-  onRouteOptionSelected: PropTypes.func.isRequired,
-}
+  routeOptions: PropTypes.arrayOf(RouteOptionPropType),
+  activeRoute: RoutePropType,
+  setActiveRoute: PropTypes.func.isRequired,
+};
