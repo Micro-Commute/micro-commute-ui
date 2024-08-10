@@ -27,7 +27,7 @@ const IndexPage = () => {
         <span style={headingAccentStyles}>— shared mobility for your commute 🌱🚴🏡</span>
       </h1>
       <p style={paragraphStyles}>
-        Solving the first and last mile problem for urban commuters change.
+        Solving the first and last mile problem for urban commuters.
       </p>
       <RouteMap/>
     </main>
