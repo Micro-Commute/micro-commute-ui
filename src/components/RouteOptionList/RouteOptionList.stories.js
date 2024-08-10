@@ -1,5 +1,7 @@
+import React from "react";
 import RouteOptionList from "./RouteOptionList";
-import {fn} from "@storybook/test";
+import { TransportType } from "../../lib/types";
+import { useState } from "react";
 
 export default {
   title: "Components/RouteOptionList",
@@ -8,37 +10,53 @@ export default {
 };
 
 export const Default = {
+  render: function ({ routeOptions }) {
+    const [activeRoute, setActiveRoute] = useState({
+      providerId: "some-provider",
+      transportType: TransportType.DOCKED_EBIKE,
+    });
+    return (
+      <RouteOptionList
+        routeOptions={routeOptions}
+        activeRoute={activeRoute}
+        setActiveRoute={setActiveRoute}
+      />
+    );
+  },
   args: {
-    routeOptionProps: [
+    routeOptions: [
       {
-        type: "docked-ebike",
         provider: {
           id: "some-provider",
           name: "Some provider",
         },
-        fromDockingStations: [
-          { value: "foo", label: "Foo street, 123" },
-          { value: "bar", label: "Bar street, 123" },
-          { value: "baz", label: "Baz street, 123" },
-        ],
-        toDockingStations: [{ value: "qux", label: "Qux street, 123" }],
-        onDockingStationChange: fn(),
+        transportType: TransportType.DOCKED_EBIKE,
+        extraProperties: {
+          fromDockingStations: [
+            { id: "foo", name: "Foo street, 123" },
+            { id: "bar", name: "Bar street, 123" },
+            { id: "baz", name: "Baz street, 123" },
+          ],
+          toDockingStations: [{ id: "qux", name: "Qux street, 123" }],
+        },
       },
       {
-        type: "docked-ebike",
         provider: {
           id: "other-provider",
-          name: "Some provider",
+          name: "Other provider",
         },
-        fromDockingStations: [
-          { value: "lorem", label: "Lorem street, 123" },
-          { value: "ipsum", label: "Ipsum street, 123" },
-          { value: "dolor", label: "Dolor street, 123" },
-        ],
-        toDockingStations: [{ value: "et", label: "Et street, 123" }],
-        onDockingStationChange: fn(),
-      }
+        transportType: TransportType.DOCKED_EBIKE,
+        extraProperties: {
+          fromDockingStations: [
+            { id: "lorem", name: "Lorem street, 123" },
+            { id: "ipsum", name: "Ipsum street, 123" },
+          ],
+          toDockingStations: [
+            { id: "dolor", name: "Dolor street, 123" },
+            { id: "et", name: "Et street, 123" },
+          ],
+        },
+      },
     ],
-    onRouteOptionSelected: fn(),
   },
 };

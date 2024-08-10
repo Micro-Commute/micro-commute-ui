@@ -1,10 +1,7 @@
 import PropTypes from "prop-types";
+import { CoordinatesPropType } from "./types";
 
-export const CoordinatesPropType = PropTypes.shape({
-  longitude: PropTypes.number.isRequired,
-  latitude: PropTypes.number.isRequired,
-});
-
+/** @deprecated - use RoutePropType from types.js */
 export const DockedEbikeRoutePropType = PropTypes.shape({
   type: PropTypes.oneOf(["docked-ebike"]),
   startingPoint: CoordinatesPropType.isRequired,
@@ -13,6 +10,5 @@ export const DockedEbikeRoutePropType = PropTypes.shape({
   destinationDockingStation: CoordinatesPropType.isRequired,
 });
 
-export const RoutePropType = PropTypes.oneOfType([
-  DockedEbikeRoutePropType,
-]);
+/** @deprecated - use RoutePropType from types.js */
+export const RoutePropType = PropTypes.oneOfType([DockedEbikeRoutePropType]);
