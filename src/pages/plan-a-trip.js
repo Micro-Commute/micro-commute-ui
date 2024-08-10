@@ -44,7 +44,7 @@ export const LIST_ROUTE_OPTIONS_QUERY = gql`
   }
 `;
 
-export default function PlanARoutePage() {
+export default function PlanATripPage() {
   const [startingPoint, setStartingPoint] = useState(null);
   const [destination, setDestination] = useState(null);
 

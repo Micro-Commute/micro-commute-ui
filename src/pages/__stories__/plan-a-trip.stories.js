@@ -1,8 +1,8 @@
-import PlanARoutePage, {LIST_ROUTE_OPTIONS_QUERY} from "../plan-a-route";
+import PlanATripPage, {LIST_ROUTE_OPTIONS_QUERY} from "../plan-a-trip";
 
 export default {
-  title: "Pages/PlanARoute",
-  component: PlanARoutePage,
+  title: "Pages/PlanATrip",
+  component: PlanATripPage,
 };
 
 export const Default = {
