@@ -16,3 +16,8 @@ Run the Storybook at http://localhost:6006.
 ```shell
 npm run storybook
 ```
+
+## Format code
+```shell
+npx prettier src --write
+```
