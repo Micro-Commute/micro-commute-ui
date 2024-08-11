@@ -1,13 +1,13 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from "react";
 
-import 'leaflet/dist/leaflet.css';
-import 'leaflet-geosearch/dist/geosearch.css';
+import "leaflet/dist/leaflet.css";
+import "leaflet-geosearch/dist/geosearch.css";
 import PropTypes from "prop-types";
-import {OpenStreetMapProvider} from "leaflet-geosearch";
-import {isDomAvailable} from "../../lib/util";
+import { OpenStreetMapProvider } from "leaflet-geosearch";
+import { isDomAvailable } from "../../lib/util";
 
-export default function LocationInput({onLocationChange, searchDelayMillis}) {
-  const [address, setAddress] = useState('');
+export default function LocationInput({ onLocationChange, searchDelayMillis }) {
+  const [address, setAddress] = useState("");
   const [results, setResults] = useState([]);
   const [focus, setFocus] = useState(false);
 
@@ -16,7 +16,7 @@ export default function LocationInput({onLocationChange, searchDelayMillis}) {
       const func = setTimeout(searchAddress, searchDelayMillis);
       return () => clearTimeout(func);
     }
-  }, [focus, address])
+  }, [focus, address]);
 
   if (!isDomAvailable()) {
     // Leaflet-geosearch not available with SSR
@@ -30,16 +30,17 @@ export default function LocationInput({onLocationChange, searchDelayMillis}) {
   };
 
   function searchAddress() {
-    provider
-      .search({query: address})
-      .then(setResults)
+    provider.search({ query: address }).then(setResults);
   }
 
   const handleResultClick = (result) => {
     const { x, y, label } = result;
     setResults([]);
     setAddress(label);
-    onLocationChange({ address: label, coordinates: { latitude: y, longitude: x } });
+    onLocationChange({
+      address: label,
+      coordinates: { latitude: y, longitude: x },
+    });
   };
 
   return (
@@ -53,7 +54,7 @@ export default function LocationInput({onLocationChange, searchDelayMillis}) {
         onFocus={() => setFocus(true)}
       />
       {results.length > 0 && (
-        <ol style={{display: "block"}}>
+        <ol style={{ display: "block" }}>
           {results.map((result, index) => (
             <li key={index} onClick={() => handleResultClick(result)}>
               {result.label}
@@ -68,8 +69,8 @@ export default function LocationInput({onLocationChange, searchDelayMillis}) {
 LocationInput.propTypes = {
   onLocationChange: PropTypes.func.isRequired,
   searchDelayMillis: PropTypes.number.isRequired,
-}
+};
 
 LocationInput.defaultProps = {
   searchDelayMillis: 500,
-}
+};
