@@ -1,31 +1,55 @@
-import { DockedEbikeRoutePropType } from "../../lib/route";
-import { Marker, useMap } from "react-leaflet";
+import { CircleMarker, Marker, Polyline, useMap } from "react-leaflet";
 import React from "react";
 import L from "leaflet";
+import { RoutePropType } from "../../lib/types";
 
-export default function DockedEbikeRouteMapFragment({ route }) {
-  const coordinates = [
-    route.startingPoint,
-    route.startingPointDockingStation,
-    route.destinationDockingStation,
-    route.destination,
-  ];
+export default function DockedEbikeRouteMapFragment({ activeRoute }) {
+  const { startingPoint, destination } = activeRoute;
+  const { fromDockingStation, toDockingStation } = activeRoute.extraProperties;
+  const latLng = ({ latitude, longitude }) => [latitude, longitude];
+
+  const coordinates = {
+    startingPoint: latLng(startingPoint),
+    fromDockingStation: latLng(fromDockingStation),
+    toDockingStation: latLng(toDockingStation),
+    destination: latLng(destination),
+  };
 
   const map = useMap();
-  map.fitBounds(new L.LatLngBounds(coordinates), { padding: [25, 25] });
-  L.polyline(coordinates).addTo(map);
+  const bounds = new L.LatLngBounds(Object.values(coordinates));
+  map.fitBounds(bounds, { padding: [50, 50] });
 
   return (
     <>
-      <Marker position={[51.505, -0.09]} />
-      <Marker position={route.startingPoint} />
-      <Marker position={route.startingPointDockingStation} />
-      <Marker position={route.destinationDockingStation} />
-      <Marker position={route.destination} />
+      <Polyline
+        positions={Object.values(coordinates)}
+        pathOptions={{ weight: 8 }}
+      />
+      <CircleMarker
+        center={coordinates.startingPoint}
+        radius={4}
+        pathOptions={{ fillColor: "white", fillOpacity: 0.5 }}
+      />
+      <CircleMarker
+        center={coordinates.fromDockingStation}
+        radius={4}
+        pathOptions={{ fillColor: "white", fillOpacity: 0.5 }}
+      />
+      <CircleMarker
+        center={coordinates.toDockingStation}
+        radius={4}
+        pathOptions={{ fillColor: "white", fillOpacity: 0.5 }}
+      />
+      <CircleMarker
+        center={coordinates.destination}
+        radius={5}
+        pathOptions={{ color: "black", fillColor: "white", fillOpacity: 1.0 }}
+      />
+      <Marker position={coordinates.startingPoint} />
     </>
   );
 }
 
 DockedEbikeRouteMapFragment.propTypes = {
-  route: DockedEbikeRoutePropType.isRequired,
+  activeRoute: RoutePropType,
 };

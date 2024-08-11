@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import RouteMap from "../components/RouteMap/RouteMap";
 import RouteInputForm from "../components/RouteInputForm/RouteInputForm";
 import RouteOptionList from "../components/RouteOptionList/RouteOptionList";
@@ -68,13 +68,9 @@ export default function PlanATripPage() {
   const { loading, error, data } = useListRouteOptionsQuery(activeRoute);
   const routeOptions = createRouteOptions(data);
 
-  if (routeOptions.length > 0 && !activeRoute.providerId) {
-    setActiveRoute((activeRoute) => ({
-      ...activeRoute,
-      providerId: routeOptions[0].provider.id,
-      transportType: routeOptions[0].transportType,
-    }));
-  }
+  useEffect(() => {
+    initializeActiveRoute(setActiveRoute, routeOptions);
+  }, [loading]);
 
   function handleStartingPointChange(location) {
     setActiveRoute((activeRoute) => ({
@@ -118,7 +114,7 @@ export default function PlanATripPage() {
         />
         <SidebarContent />
       </aside>
-      <RouteMap style={{ height: "100%" }} />
+      <RouteMap style={{ height: "100%" }} activeRoute={activeRoute} />
     </main>
   );
 }
@@ -145,6 +141,10 @@ function createDockedEbikeRouteOption(data) {
   const mapDockingStation = (station) => ({
     id: station["id"],
     name: station["name"],
+    location: {
+      latitude: station["location"]["latitude"],
+      longitude: station["location"]["longitude"],
+    },
   });
 
   return {
@@ -158,4 +158,33 @@ function createDockedEbikeRouteOption(data) {
       toDockingStations: data["toDockingStations"].map(mapDockingStation),
     },
   };
+}
+
+function initializeActiveRoute(setActiveRoute, routeOptions) {
+  setActiveRoute((prevActiveRoute) => {
+    const activeRoute = {
+      ...initialActiveRoute(),
+      startingPoint: prevActiveRoute.startingPoint,
+      destination: prevActiveRoute.destination,
+    };
+
+    if (routeOptions.length <= 0) {
+      return activeRoute;
+    }
+
+    const firstOption = routeOptions[0];
+    activeRoute.providerId = firstOption.provider.id;
+    activeRoute.transportType = firstOption.transportType;
+
+    if (firstOption.transportType === TransportType.DOCKED_EBIKE) {
+      const { fromDockingStations } = firstOption.extraProperties;
+      const { toDockingStations } = firstOption.extraProperties;
+      activeRoute.extraProperties = {
+        fromDockingStation: fromDockingStations[0].location,
+        toDockingStation: toDockingStations[0].location,
+      };
+    }
+
+    return activeRoute;
+  });
 }
