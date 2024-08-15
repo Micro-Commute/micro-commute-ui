@@ -1,11 +1,7 @@
 import { CircleMarker, Marker, Polyline, useMap } from "react-leaflet";
 import React from "react";
 import L from "leaflet";
-import {
-  CoordinatesPropType,
-  RouteOptionPropType,
-  RoutePropType,
-} from "../../modules/types";
+import { CoordinatesPropType, RouteOptionPropType } from "../../modules/types";
 
 export default function DockedEbikeRouteMapFragment({
   startingPoint,
@@ -84,7 +80,6 @@ DockedEbikeRouteMapFragment.propTypes = {
   startingPoint: CoordinatesPropType,
   destination: CoordinatesPropType,
   routeOption: RouteOptionPropType,
-  concreteRoute: RoutePropType,
 };
 
 /**

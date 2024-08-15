@@ -20,9 +20,3 @@ export const CoordinatesPropType = PropTypes.shape({
   latitude: PropTypes.number.isRequired,
   longitude: PropTypes.number.isRequired,
 });
-
-export const RoutePropType = PropTypes.shape({
-  startingPoint: CoordinatesPropType.isRequired,
-  destination: CoordinatesPropType.isRequired,
-  extraProperties: PropTypes.object,
-});
