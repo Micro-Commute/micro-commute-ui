@@ -20,6 +20,7 @@
   "dependencies": {
     "@apollo/client": "^3.11.4",
     "@esri/react-arcgis": "^5.2.0",
+    "@reduxjs/toolkit": "^2.2.7",
     "esri-leaflet": "^3.0.12",
     "esri-leaflet-geocoder": "^3.1.4",
     "gatsby": "^5.13.5",
@@ -30,6 +31,7 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-leaflet": "^4.2.1",
+    "react-redux": "^9.1.2",
     "sass": "^1.77.8"
   },
   "devDependencies": {
