@@ -1,4 +1,8 @@
-import PlanATripPage, { LIST_ROUTE_OPTIONS_QUERY } from "../plan-a-trip";
+import PlanATripPage from "../plan-a-trip";
+import { LIST_ROUTE_OPTIONS_QUERY } from "../../modules/planatrip/graphql";
+import { Provider } from "react-redux";
+import React from "react";
+import { store } from "../../modules/store";
 
 export default {
   title: "Pages/PlanATrip",
@@ -7,6 +11,7 @@ export default {
 
 export const Default = {
   args: {},
+  decorators: [(story) => <Provider store={store}>{story()}</Provider>],
 };
 
 Default.parameters = {
