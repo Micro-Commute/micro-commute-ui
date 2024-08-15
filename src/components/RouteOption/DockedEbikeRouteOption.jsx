@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import Style from "react-style-proptype";
-import { RouteOptionPropType } from "../../lib/types";
+import { RouteOptionPropType } from "../../modules/types";
 
 export default function DockedEbikeRouteOption({
   routeOption,

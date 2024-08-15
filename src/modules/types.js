@@ -14,7 +14,6 @@ export const RouteOptionPropType = PropTypes.shape({
     name: PropTypes.string.isRequired,
   }),
   transportType: TransportTypePropType,
-  extraProperties: PropTypes.object.isRequired,
 });
 
 export const CoordinatesPropType = PropTypes.shape({
@@ -23,9 +22,7 @@ export const CoordinatesPropType = PropTypes.shape({
 });
 
 export const RoutePropType = PropTypes.shape({
-  providerId: PropTypes.string.isRequired,
-  transportType: PropTypes.string.isRequired,
   startingPoint: CoordinatesPropType.isRequired,
   destination: CoordinatesPropType.isRequired,
-  extraProperties: PropTypes.object.isRequired,
+  extraProperties: PropTypes.object,
 });

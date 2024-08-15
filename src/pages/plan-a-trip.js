@@ -3,7 +3,7 @@ import RouteMap from "../components/RouteMap/RouteMap";
 import RouteInputForm from "../components/RouteInputForm/RouteInputForm";
 import RouteOptionList from "../components/RouteOptionList/RouteOptionList";
 import { gql, useQuery } from "@apollo/client";
-import { TransportType } from "../lib/types";
+import { TransportType } from "../modules/types";
 
 export const LIST_ROUTE_OPTIONS_QUERY = gql`
   query ListRouteOptions(

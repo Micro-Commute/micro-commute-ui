@@ -1,5 +1,5 @@
 import RouteMap from "./RouteMap";
-import { TransportType } from "../../lib/types";
+import { TransportType } from "../../modules/types";
 
 export default {
   title: "Components/RouteMap",

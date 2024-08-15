@@ -1,10 +1,10 @@
 import React from "react";
 import { MapContainer, TileLayer } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
-import { isDomAvailable } from "../../lib/util";
+import { isDomAvailable } from "../../modules/util";
 import DockedEbikeRouteMapFragment from "./DockedEbikeRouteMapFragment";
 import Style from "react-style-proptype";
-import { RoutePropType, TransportType } from "../../lib/types";
+import { TransportType } from "../../modules/types";
 import DefaultMapFragment from "./DefaultMapFragment";
 
 export default function RouteMap(props) {

@@ -1,5 +1,5 @@
-const {configureLeaflet} = require("./src/lib/leaflet");
-const {wrapWithApolloProvider} = require("./src/lib/apollo");
+const {configureLeaflet} = require("./src/modules/config/leaflet");
+const {wrapWithApolloProvider} = require("./src/modules/config/apollo");
 
 require("./src/styles/reset.css")
 
@@ -8,5 +8,6 @@ exports.onInitialClientRender = function() {
 }
 
 exports.wrapRootElement = function({element}) {
-  return wrapWithApolloProvider(element);
+  element = wrapWithApolloProvider(element);
+  return element;
 }
