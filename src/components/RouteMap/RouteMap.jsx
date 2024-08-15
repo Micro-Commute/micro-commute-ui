@@ -1,20 +1,30 @@
 import React from "react";
 import { MapContainer, TileLayer } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
-import { isDomAvailable } from "../../lib/util";
+import { isDomAvailable } from "../../modules/util";
 import DockedEbikeRouteMapFragment from "./DockedEbikeRouteMapFragment";
 import Style from "react-style-proptype";
-import { RoutePropType, TransportType } from "../../lib/types";
+import { TransportType } from "../../modules/types";
 import DefaultMapFragment from "./DefaultMapFragment";
+import { useSelector } from "react-redux";
+import {
+  selectDestination,
+  selectSelectedRouteOption,
+  selectStartingPoint,
+} from "../../modules/planatrip/planATripSlice";
 
-export default function RouteMap(props) {
+export default function RouteMap({ style }) {
+  const startingPoint = useSelector(selectStartingPoint);
+  const destination = useSelector(selectDestination);
+  const routeOption = useSelector(selectSelectedRouteOption);
+
   if (!isDomAvailable()) {
     return <div>Loading...</div>;
   }
 
   return (
     <MapContainer
-      style={props.style}
+      style={style}
       center={[51.505, -0.09]}
       zoom={13}
       scrollWheelZoom={false}
@@ -23,13 +33,28 @@ export default function RouteMap(props) {
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
-      {props.activeRoute && <RouteMapFragment {...props} />}
+      {(() => {
+        if (!routeOption) {
+          return <DefaultMapFragment startingPoint={startingPoint} />;
+        } else if (routeOption.transportType === TransportType.DOCKED_EBIKE) {
+          return (
+            <DockedEbikeRouteMapFragment
+              startingPoint={startingPoint}
+              destination={destination}
+              routeOption={routeOption}
+            />
+          );
+        } else {
+          throw TypeError(
+            `Unknown route type: '${routeOption.transportType}'.`,
+          );
+        }
+      })()}
     </MapContainer>
   );
 }
 
 RouteMap.propTypes = {
-  activeRoute: RoutePropType,
   style: Style,
 };
 
@@ -37,18 +62,4 @@ RouteMap.defaultProps = {
   style: {
     height: "400px",
   },
-};
-
-function RouteMapFragment({ activeRoute }) {
-  if (!activeRoute.transportType) {
-    return <DefaultMapFragment activeRoute={activeRoute} />;
-  } else if (activeRoute.transportType === TransportType.DOCKED_EBIKE) {
-    return <DockedEbikeRouteMapFragment activeRoute={activeRoute} />;
-  } else {
-    throw TypeError(`Unknown route type: '${activeRoute.transportType}'.`);
-  }
-}
-
-RouteMapFragment.propTypes = {
-  activeRoute: RoutePropType,
 };

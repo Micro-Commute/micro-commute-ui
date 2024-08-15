@@ -4,7 +4,7 @@ import "leaflet/dist/leaflet.css";
 import "leaflet-geosearch/dist/geosearch.css";
 import PropTypes from "prop-types";
 import { OpenStreetMapProvider } from "leaflet-geosearch";
-import { isDomAvailable } from "../../lib/util";
+import { isDomAvailable } from "../../modules/util";
 
 export default function LocationInput({ onLocationChange, searchDelayMillis }) {
   const [address, setAddress] = useState("");

@@ -1,5 +1,8 @@
-const {wrapWithApolloProvider} = require("./src/lib/apollo");
+const {wrapWithApolloProvider} = require("./src/modules/config/apollo");
+const {wrapWithReduxProvider} = require("./src/modules/config/redux");
 
 exports.wrapRootElement = function({element}) {
-  return wrapWithApolloProvider(element);
+  element = wrapWithApolloProvider(element);
+  element = wrapWithReduxProvider(element);
+  return element;
 }
