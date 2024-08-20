@@ -9,6 +9,7 @@ const config = {
     "@chromatic-com/storybook",
     "@storybook/addon-interactions",
     "storybook-addon-apollo-client",
+    "storybook-addon-mock",
   ],
   framework: {
     name: "@storybook/react-webpack5",

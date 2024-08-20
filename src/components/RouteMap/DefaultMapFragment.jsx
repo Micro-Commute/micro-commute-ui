@@ -9,9 +9,17 @@ export default function DefaultMapFragment({ startingPoint }) {
       startingPoint.coordinates.latitude,
       startingPoint.coordinates.longitude,
     ];
+
     map.panTo(coordinates);
     map.setZoomAround(coordinates, 15);
-    return <Marker position={coordinates} />;
+
+    return (
+      <Marker
+        alt="Starting point marker"
+        title={startingPoint.address}
+        position={coordinates}
+      />
+    );
   }
 
   return <></>;

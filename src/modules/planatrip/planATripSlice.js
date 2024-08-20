@@ -169,6 +169,12 @@ export const planATripSlice = createSlice({
     selectRouteOptionsLoadingStatus: (state) => state.routeOptions.loading,
     /**
      * @param {PlanATripState} state
+     * @return {number}
+     */
+    selectNumberOfAvailableRouteOptions: (state) =>
+      state.routeOptions.entities.length,
+    /**
+     * @param {PlanATripState} state
      * @return {int}
      */
     selectSelectedRouteOptionIndex: (state) =>
@@ -271,6 +277,7 @@ export const selectRouteOptions = createSelector(
 export const {
   selectStartingPoint,
   selectDestination,
+  selectNumberOfAvailableRouteOptions,
   selectRouteOptionsLoadingStatus,
   selectSelectedRouteOption,
   selectSelectedRouteOptionIndex,

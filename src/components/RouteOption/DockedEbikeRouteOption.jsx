@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useId } from "react";
 import PropTypes from "prop-types";
 import Style from "react-style-proptype";
 import { RouteOptionPropType } from "../../modules/types";
@@ -27,6 +27,9 @@ export default function DockedEbikeRouteOption({
     <article
       onClick={handleArticleClick}
       style={{ backgroundColor: isSelected ? "cyan" : "inherit" }}
+      role="option"
+      aria-selected={isSelected}
+      aria-label={`Docked e-bike route option with ${routeOption.provider.name}.`}
     >
       <header>
         <h1>{routeOption.provider.name}</h1>
@@ -65,6 +68,8 @@ DockedEbikeRouteOption.propTypes = {
 
 /** Pre-condition: options.length > 0 */
 function DockingStationSelector({ label, value, stations, onChange, style }) {
+  const labelId = useId();
+
   const handleChange = (e) => {
     let stationId = e.target.value;
     onChange(stationId);
@@ -72,12 +77,15 @@ function DockingStationSelector({ label, value, stations, onChange, style }) {
 
   return (
     <div style={style}>
-      <label style={{ display: "block" }}>{label}</label>
+      <label style={{ display: "block" }} id={labelId}>
+        {label}
+      </label>
       <select
         value={value}
         onChange={handleChange}
         // Prevent DockedEbikeRouteOption 'onClick' when clicking on this select
         onClick={(e) => e.stopPropagation()}
+        aria-labelledby={labelId}
       >
         {stations.map((station) => (
           <option value={station.id} key={station.id}>

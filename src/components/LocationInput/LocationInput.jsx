@@ -6,13 +6,17 @@ import PropTypes from "prop-types";
 import { OpenStreetMapProvider } from "leaflet-geosearch";
 import { isDomAvailable } from "../../modules/util";
 
-export default function LocationInput({ onLocationChange, searchDelayMillis }) {
+export default function LocationInput({
+  onLocationChange,
+  searchDelayMillis = 500,
+  ariaLabelledBy = null,
+}) {
   const [address, setAddress] = useState("");
   const [results, setResults] = useState([]);
   const [focus, setFocus] = useState(false);
 
   useEffect(() => {
-    if (focus && address) {
+    if (focus) {
       const func = setTimeout(searchAddress, searchDelayMillis);
       return () => clearTimeout(func);
     }
@@ -52,11 +56,18 @@ export default function LocationInput({ onLocationChange, searchDelayMillis }) {
         onChange={handleTextInputChange}
         onBlur={() => setFocus(false)}
         onFocus={() => setFocus(true)}
+        aria-labelledby={ariaLabelledBy || undefined}
+        aria-haspopup="listbox"
+        aria-expanded={results.length > 0}
       />
       {results.length > 0 && (
-        <ol style={{ display: "block" }}>
+        <ol role="listbox" style={{ display: "block" }}>
           {results.map((result, index) => (
-            <li key={index} onClick={() => handleResultClick(result)}>
+            <li
+              key={index}
+              role="option"
+              onClick={() => handleResultClick(result)}
+            >
               {result.label}
             </li>
           ))}
@@ -69,6 +80,7 @@ export default function LocationInput({ onLocationChange, searchDelayMillis }) {
 LocationInput.propTypes = {
   onLocationChange: PropTypes.func.isRequired,
   searchDelayMillis: PropTypes.number.isRequired,
+  ariaLabelledBy: PropTypes.string,
 };
 
 LocationInput.defaultProps = {
