@@ -7,6 +7,7 @@ import {
   destinationChanged,
   fetchRouteOptions,
   selectDestination,
+  selectNumberOfAvailableRouteOptions,
   selectRouteOptionsLoadingStatus,
   selectStartingPoint,
   startingPointChanged,
@@ -18,6 +19,7 @@ export default function PlanATripPage() {
   const startingPoint = useSelector(selectStartingPoint);
   const destination = useSelector(selectDestination);
   const loadingStatus = useSelector(selectRouteOptionsLoadingStatus);
+  const nRouteOptions = useSelector(selectNumberOfAvailableRouteOptions);
   const graphQLClient = useApolloClient();
 
   useEffect(() => {
@@ -56,7 +58,11 @@ export default function PlanATripPage() {
             case "failed":
               return <span>An error occurred</span>;
             case "succeeded":
-              return <RouteOptionsContainer dispatch={dispatch} />;
+              return nRouteOptions > 0 ? (
+                <RouteOptionsContainer dispatch={dispatch} />
+              ) : (
+                <span>No route options</span>
+              );
             default:
               throw new TypeError(
                 `Unknown loading status: '${loadingStatus}'.`,

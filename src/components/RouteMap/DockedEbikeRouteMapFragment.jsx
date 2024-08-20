@@ -71,7 +71,11 @@ export default function DockedEbikeRouteMapFragment({
         radius={5}
         pathOptions={{ color: "black", fillColor: "white", fillOpacity: 1.0 }}
       />
-      <Marker position={routeCoords.startingPoint} />
+      <Marker
+        alt="Starting point marker"
+        title={startingPoint.address}
+        position={routeCoords.startingPoint}
+      />
     </>
   );
 }

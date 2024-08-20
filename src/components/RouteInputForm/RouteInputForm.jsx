@@ -6,12 +6,18 @@ const RouteInputForm = ({ onStartingPointChange, onDestinationChange }) => {
   return (
     <form>
       <div>
-        <label>Starting Point:</label>
-        <LocationInput onLocationChange={onStartingPointChange} />
+        <label id="starting-point-label">Starting point</label>
+        <LocationInput
+          onLocationChange={onStartingPointChange}
+          ariaLabelledBy="starting-point-label"
+        />
       </div>
       <div>
-        <label>Destination:</label>
-        <LocationInput onLocationChange={onDestinationChange} />
+        <label id="destination-label">Destination</label>
+        <LocationInput
+          onLocationChange={onDestinationChange}
+          ariaLabelledBy="destination-label"
+        />
       </div>
     </form>
   );

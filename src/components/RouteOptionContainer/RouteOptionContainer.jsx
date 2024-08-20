@@ -14,7 +14,7 @@ function RouteOptionContainer({ dispatch }) {
   const routeOptions = useSelector(selectRouteOptions);
   const selectedIndex = useSelector(selectSelectedRouteOptionIndex);
   return (
-    <div>
+    <div role="listbox">
       {routeOptions.map((routeOption, index) =>
         (() => {
           switch (routeOption.transportType) {

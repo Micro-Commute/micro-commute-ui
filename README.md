@@ -17,6 +17,12 @@ Run the Storybook at http://localhost:6006.
 npm run storybook
 ```
 
+### Run interaction tests
+[Run the Storybook](#run-storybook), then, run the storybook tests.
+```shell
+npm run test-storybook
+```
+
 ## Format code
 ```shell
 npx prettier src --write
