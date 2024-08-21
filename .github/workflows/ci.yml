@@ -1,0 +1,35 @@
+name: "Storybook CI"
+
+on: pull_request
+
+jobs:
+  publish-storybook:
+    name: Publish storybook
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: ".node-version"
+      - name: Install dependencies
+        run: npm install
+      - name: Run chromatic
+        uses: chromaui/action@latest
+        with:
+          projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+
+  test-storybook:
+    name: Test storybook
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: ".node-version"
+      - name: Install dependencies
+        run: npm install
+      - name: Install playwright
+        run: npx playwright install --with-deps
+      - name: Run Storybook tests
+        run: npm test-storybook
+        env:
+          TARGET_URL: "https://{{ github.ref_name }}--66c62ded00306661f2c5e455.chromatic.com"
