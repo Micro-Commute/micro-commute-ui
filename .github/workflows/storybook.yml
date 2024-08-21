@@ -37,9 +37,9 @@ jobs:
       - name: Install dependencies
         run: npm install
       # Source: https://github.com/microsoft/playwright/issues/7249#issuecomment-1154603556
-      - name: Get installed playwright version
+      - name: Get installed Playwright version
         id: playwright-version
-        run: echo "::set-output name=version::$(yarn why --json @playwright/test | grep -h 'workspace:.' | jq --raw-output '.children[].locator' | sed -e 's/@playwright\/test@.*://')"
+        run: echo "::set-output name=version::$(npm ls @playwright/test | grep @playwright | sed 's/.*@//')"
       - uses: actions/cache@v3
         id: playwright-cache
         with:
