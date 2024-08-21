@@ -22,7 +22,12 @@ const RouteInputForm = ({ onStartingPointChange, onDestinationChange,  onArriveB
         />
       </div>
       <div>
-        <DateTimeInput value={arriveByValue} onChange={onArriveByDateTimeChanged} />
+        <label id="arrive-by-label">Arrive By</label>
+        <DateTimeInput
+          value={arriveByValue}
+          onChange={onArriveByDateTimeChanged}
+          ariaLabelledBy="arrive-by-label"
+        />
       </div>
     </form>
   );
