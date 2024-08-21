@@ -1,4 +1,4 @@
-name: "Storybook CI"
+name: "Storybook"
 
 on: pull_request
 
@@ -6,6 +6,8 @@ jobs:
   publish-storybook:
     name: Publish storybook
     runs-on: ubuntu-latest
+    outputs:
+      storybookUrl: ${{ steps.run-chromatic.outputs.storybookUrl }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -17,6 +19,7 @@ jobs:
       - name: Install dependencies
         run: npm install
       - name: Run chromatic
+        id: run-chromatic
         uses: chromaui/action@latest
         with:
           projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
@@ -42,4 +45,4 @@ jobs:
       - name: Run storybook tests
         run: npm run test-storybook
         env:
-          TARGET_URL: "${{ needs.publish-storybook.storybookUrl }}"
+          TARGET_URL: "${{ needs.publish-storybook.outputs.storybookUrl }}"
