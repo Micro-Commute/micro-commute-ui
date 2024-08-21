@@ -18,8 +18,7 @@
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "test-storybook": "test-storybook",
-    "prepare": "husky install",
-    "chromatic": "npx chromatic --project-token=chpt_25438e0a35f58c7"
+    "prepare": "husky install"
   },
   "dependencies": {
     "@apollo/client": "^3.11.4",
