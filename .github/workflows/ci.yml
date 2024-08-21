@@ -20,6 +20,7 @@ jobs:
 
   test-storybook:
     name: Test storybook
+    needs: publish-storybook
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
