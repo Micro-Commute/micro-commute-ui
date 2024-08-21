@@ -203,7 +203,7 @@ export const TestNoRouteOptions = {
      * NO ROUTE OPTIONS *
      *******************/
 
-    const noRouteOptionsMessage = await canvas.findByText("No route options");
+    const noRouteOptionsMessage = await canvas.findByText("Many route options");
     expect(noRouteOptionsMessage).toBeInTheDocument();
   },
 };
