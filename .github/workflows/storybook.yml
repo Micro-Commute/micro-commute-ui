@@ -1,6 +1,6 @@
 name: "Storybook"
 
-on: pull_request
+on: push
 
 jobs:
   publish-storybook:

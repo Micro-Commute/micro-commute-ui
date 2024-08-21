@@ -5,6 +5,9 @@ Commits to main deploy to https://micro-commute.netlify.app/.
 
 [![Netlify Status](https://api.netlify.com/api/v1/badges/c05aaa12-2d84-44ea-9701-659e93fcdf85/deploy-status)](https://app.netlify.com/sites/micro-commute/deploys)
 
+## Continuous deployment of Storybook
+Commits to main deploy the Storybook to https://main--66c62ded00306661f2c5e455.chromatic.com/.
+
 ## Run locally
 Run the site at http://localhost:8000.
 ```shell
