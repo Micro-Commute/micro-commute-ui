@@ -1,0 +1,56 @@
+name: "Storybook"
+
+on: push
+
+jobs:
+  publish-storybook:
+    name: Publish storybook
+    runs-on: ubuntu-latest
+    outputs:
+      storybookUrl: ${{ steps.run-chromatic.outputs.storybookUrl }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: ".node-version"
+          cache: "npm"
+      - name: Install dependencies
+        run: npm install
+      - name: Run chromatic
+        id: run-chromatic
+        uses: chromaui/action@latest
+        with:
+          projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+
+  test-storybook:
+    name: Test storybook
+    needs: publish-storybook
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: ".node-version"
+          cache: "npm"
+      - name: Install dependencies
+        run: npm install
+      # Source: https://github.com/microsoft/playwright/issues/7249#issuecomment-1154603556
+      - name: Get installed Playwright version
+        id: playwright-version
+        run: echo "version=$(npm ls @playwright/test | grep @playwright | sed 's/.*@//')" >> $GITHUB_OUTPUT
+      - uses: actions/cache@v3
+        id: playwright-cache
+        with:
+          path: '~/.cache/ms-playwright'
+          key: '${{ runner.os }}-playwright-${{ steps.playwright-version.outputs.version }}'
+          restore-keys: |
+            ${{ runner.os }}-playwright-
+      - name: Install playwright dependencies
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
+        run: npx playwright install --with-deps
+      - name: Run storybook tests
+        run: npm run test-storybook
+        env:
+          TARGET_URL: "${{ needs.publish-storybook.outputs.storybookUrl }}"
