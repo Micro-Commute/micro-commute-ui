@@ -13,6 +13,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version-file: ".node-version"
+          cache: "npm"
       - name: Install dependencies
         run: npm install
       - name: Run chromatic
@@ -29,11 +30,16 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version-file: ".node-version"
+          cache: "npm"
       - name: Install dependencies
         run: npm install
       - name: Install playwright
         run: npx playwright install --with-deps
+      - name: Extract branch name
+        shell: bash
+        run: echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_OUTPUT
+        id: extract_branch
       - name: Run storybook tests
         run: npm run test-storybook
         env:
-          TARGET_URL: "https://${{ github.ref_name }}--66c62ded00306661f2c5e455.chromatic.com"
+          TARGET_URL: "${{ needs.publish-storybook.storybookUrl }}"
