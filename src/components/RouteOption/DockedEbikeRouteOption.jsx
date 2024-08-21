@@ -26,7 +26,7 @@ export default function DockedEbikeRouteOption({
   return (
     <article
       onClick={handleArticleClick}
-      style={{ backgroundColor: isSelected ? "pink" : "inherit" }}
+      style={{ backgroundColor: isSelected ? "cyan" : "inherit" }}
       role="option"
       aria-selected={isSelected}
       aria-label={`Docked e-bike route option with ${routeOption.provider.name}.`}
