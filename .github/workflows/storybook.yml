@@ -39,7 +39,7 @@ jobs:
       # Source: https://github.com/microsoft/playwright/issues/7249#issuecomment-1154603556
       - name: Get installed Playwright version
         id: playwright-version
-        run: echo "::set-output name=version::$(npm ls @playwright/test | grep @playwright | sed 's/.*@//')"
+        run: echo "version=$(npm ls @playwright/test | grep @playwright | sed 's/.*@//')" >> $GITHUB_OUTPUT
       - uses: actions/cache@v3
         id: playwright-cache
         with:
