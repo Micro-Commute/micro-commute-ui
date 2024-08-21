@@ -31,7 +31,7 @@ jobs:
         run: npm install
       - name: Install playwright
         run: npx playwright install --with-deps
-      - name: Run Storybook tests
-        run: npm test-storybook
+      - name: Run storybook tests
+        run: npm run test-storybook
         env:
           TARGET_URL: "https://{{ github.ref_name }}--66c62ded00306661f2c5e455.chromatic.com"
