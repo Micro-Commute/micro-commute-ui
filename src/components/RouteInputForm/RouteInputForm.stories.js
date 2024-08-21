@@ -12,5 +12,7 @@ export const Default = {
   args: {
     onStartingPointChange: fn(),
     onDestinationChange: fn(),
+    onArriveByDateTimeChanged: fn(),
+    arriveByValue: "2023-09-10T10:00",
   },
 };
