@@ -1,8 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
 import LocationInput from "../LocationInput/LocationInput";
+import DateTimeInput from "../DateTimeInput/DateTimeInput";
 
-const RouteInputForm = ({ onStartingPointChange, onDestinationChange }) => {
+const RouteInputForm = ({ onStartingPointChange, onDestinationChange,  onArriveByDateTimeChange,
+  arriveByValue }) => {
   return (
     <form>
       <div>
@@ -19,6 +21,13 @@ const RouteInputForm = ({ onStartingPointChange, onDestinationChange }) => {
           ariaLabelledBy="destination-label"
         />
       </div>
+      <div>
+        <label id="arrive-by-label">Arrive By</label>
+        <DateTimeInput
+          value={arriveByValue}
+          onChange={onArriveByDateTimeChange}
+        />
+      </div>
     </form>
   );
 };
@@ -26,6 +35,8 @@ const RouteInputForm = ({ onStartingPointChange, onDestinationChange }) => {
 RouteInputForm.propTypes = {
   onStartingPointChange: PropTypes.func.isRequired,
   onDestinationChange: PropTypes.func.isRequired,
+  onArriveByDateTimeChange: PropTypes.func.isRequired,
+  arriveByValue: PropTypes.string.isRequired,
 };
 
 export default RouteInputForm;
