@@ -10,7 +10,7 @@ export default {
 
 export const Default = {
   args: {
-    value: "2023-09-10T10:00", // Example date and time
+    value: "2023-09-10T10:00",
     onChange: fn(),
   },
 };
