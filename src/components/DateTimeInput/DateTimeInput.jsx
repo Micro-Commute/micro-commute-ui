@@ -19,4 +19,3 @@ DateTimeInput.propTypes = {
 };
 
 export default DateTimeInput;
-
