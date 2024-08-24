@@ -4,8 +4,10 @@ import RouteInputForm from "../components/RouteInputForm/RouteInputForm";
 import { useApolloClient } from "@apollo/client";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  arriveByDateTimeChanged,
   destinationChanged,
   fetchRouteOptions,
+  selectArriveBy,
   selectDestination,
   selectNumberOfAvailableRouteOptions,
   selectRouteOptionsLoadingStatus,
@@ -18,6 +20,7 @@ export default function PlanATripPage() {
   const dispatch = useDispatch();
   const startingPoint = useSelector(selectStartingPoint);
   const destination = useSelector(selectDestination);
+  const arriveBy = useSelector(selectArriveBy);
   const loadingStatus = useSelector(selectRouteOptionsLoadingStatus);
   const nRouteOptions = useSelector(selectNumberOfAvailableRouteOptions);
   const graphQLClient = useApolloClient();
@@ -48,6 +51,11 @@ export default function PlanATripPage() {
             // noinspection JSCheckFunctionSignatures
             dispatch(destinationChanged(location));
           }}
+          onArriveByDateTimeChange={(dateTime) => {
+            // noinspection JSCheckFunctionSignatures
+            dispatch(arriveByDateTimeChanged(dateTime));
+          }}
+          arriveByDateTimeValue={arriveBy}
         />
         {(() => {
           switch (loadingStatus) {

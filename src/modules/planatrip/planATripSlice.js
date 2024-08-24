@@ -14,6 +14,7 @@ import { TransportType } from "../types";
  * @typedef {object} PlanATripState
  * @property {Location|null} startingPoint
  * @property {Location|null} destination
+ * @property {DateTime|null} arriveBy
  * @property {Object.<string, Provider>} providers
  * @property {RouteOptionState} routeOptions
  */
@@ -22,6 +23,11 @@ import { TransportType } from "../types";
  * @typedef {object} Location
  * @property {string} address
  * @property {Coordinates} coordinates
+ */
+
+/**
+ * @typedef {string} DateTime
+ * Example: "2024-08-24T12:10"
  */
 
 /**
@@ -72,6 +78,7 @@ export const planATripSlice = createSlice({
   initialState: {
     startingPoint: null,
     destination: null,
+    arriveBy: null,
     providers: [],
     routeOptions: {
       loading: "idle",
@@ -94,6 +101,13 @@ export const planATripSlice = createSlice({
      */
     destinationChanged: (state, action) => {
       state.destination = action.payload;
+    },
+    /**
+     * @param {PlanATripState} state
+     * @param {{payload: DateTime}} action
+     */
+    arriveByDateTimeChanged: (state, action) => {
+      state.arriveBy = action.payload;
     },
     /**
      * @param {PlanATripState} state
@@ -164,6 +178,11 @@ export const planATripSlice = createSlice({
     selectDestination: (state) => state.destination,
     /**
      * @param {PlanATripState} state
+     * @returns {DateTime|null}
+     */
+    selectArriveBy: (state) => state.arriveBy,
+    /**
+     * @param {PlanATripState} state
      * @returns {RouteOptionLoadingStatus}
      */
     selectRouteOptionsLoadingStatus: (state) => state.routeOptions.loading,
@@ -216,6 +235,10 @@ export const {
    * @param {{payload: Location}} action
    */
   destinationChanged,
+  /**
+   * @param {{payload: DateTime}} action
+   */
+  arriveByDateTimeChanged,
   /**
    * @param {{payload:{routeOptionIndex:int}}} action
    */
@@ -277,6 +300,7 @@ export const selectRouteOptions = createSelector(
 export const {
   selectStartingPoint,
   selectDestination,
+  selectArriveBy,
   selectNumberOfAvailableRouteOptions,
   selectRouteOptionsLoadingStatus,
   selectSelectedRouteOption,
