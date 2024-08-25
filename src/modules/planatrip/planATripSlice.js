@@ -31,6 +31,11 @@ import { TransportType } from "../types";
  */
 
 /**
+ * @typedef {string} Duration
+ * Example: "PT0H30M5S" (= 0 hours, 30 minutes, 5 seconds)
+ */
+
+/**
  * @typedef {object} Coordinates
  * @property {number} latitude
  * @property {number} longitude
@@ -55,11 +60,24 @@ import { TransportType } from "../types";
  */
 
 /**
+ * @typedef {object} TravelTimes
+ * @property {Duration} departureTime
+ * @property {Duration} arrivalTime
+ * @property {Duration} takeBikeTime
+ * @property {Duration} parkBikeTime
+ * @property {Duration} totalTravelTime
+ * @property {Duration} walkingToDockingStation
+ * @property {Duration} bikingTime
+ * @property {Duration} walkingToDestination
+ */
+
+/**
  * @typedef {object} DockedEBikeRouteOption
  * @property {string} providerId
  * @property {TransportType.DOCKED_EBIKE} transportType
  * @property {{startingPoint:DockingStation[],destination:DockingStation[]}} nearByStations
  * @property {{startingPoint:string|null,destination:string|null}} selectedStationIds
+ * @property {TravelTimes} travelTimes
  */
 
 /**
@@ -358,6 +376,16 @@ function mapDockedEbikeRouteOptionFromGraphQl(data) {
           : null,
       destination:
         data.toDockingStations.length > 0 ? data.toDockingStations[0].id : null,
+    },
+    travelTimes: {
+      departureTime: "PT0H5M0S",
+      arrivalTime: "PT0H30M0S",
+      takeBikeTime: "PT0H3M0S",
+      parkBikeTime: "PT0H2M0S",
+      totalTravelTime: "PT0H40M0S",
+      walkingToDockingStation: "PT0H10M0S",
+      bikingTime: "PT0H20M0S",
+      walkingToDestination: "PT0H5M0S",
     },
   };
 }
