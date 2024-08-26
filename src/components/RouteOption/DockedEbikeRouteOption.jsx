@@ -2,6 +2,7 @@ import React, { useId } from "react";
 import PropTypes from "prop-types";
 import Style from "react-style-proptype";
 import { RouteOptionPropType } from "../../modules/types";
+import DockedEbikeRouteOptionDetails from "./DockedEbikeRouteOptionDetails"; 
 
 export default function DockedEbikeRouteOption({
   routeOption,
@@ -16,8 +17,8 @@ export default function DockedEbikeRouteOption({
   const toDockingStationId = routeOption.selectedStationIds.destination;
 
   function handleArticleClick(event) {
+    // Do not send click when clicking on an input element
     if (event.target instanceof HTMLInputElement) {
-      // Do not send click when clicking on an input element
       return;
     }
     onClick();
@@ -34,22 +35,30 @@ export default function DockedEbikeRouteOption({
       <header>
         <h1>{routeOption.provider.name}</h1>
       </header>
+
       {fromDockingStations.length > 0 && toDockingStations.length > 0 ? (
-        <div style={{ display: "flex" }}>
-          <DockingStationSelector
-            label="From docking station"
-            value={fromDockingStationId}
-            stations={fromDockingStations}
-            onChange={onStartingPointStationChange}
-            style={{ flex: 1 }}
-          />
-          <DockingStationSelector
-            label="To docking station"
-            value={toDockingStationId}
-            stations={toDockingStations}
-            onChange={onDestinationStationChange}
-            style={{ flex: 1 }}
-          />
+        <div>
+          <div style={{ display: "flex" }}>
+            <DockingStationSelector
+              label="From docking station"
+              value={fromDockingStationId}
+              stations={fromDockingStations}
+              onChange={onStartingPointStationChange}
+              style={{ flex: 1 }}
+            />
+            <DockingStationSelector
+              label="To docking station"
+              value={toDockingStationId}
+              stations={toDockingStations}
+              onChange={onDestinationStationChange}
+              style={{ flex: 1 }}
+            />
+          </div>
+
+          {/* Render the details only if routeOption.details is not null and the option is selected */}
+          {isSelected && routeOption.details && (
+            <DockedEbikeRouteOptionDetails routeOption={routeOption} />
+          )}
         </div>
       ) : (
         <em>No nearby docking stations.</em>
@@ -105,7 +114,7 @@ DockingStationSelector.propTypes = {
       id: PropTypes.string.isRequired,
       name: PropTypes.string.isRequired,
     }),
-  ),
+  ).isRequired,
   onChange: PropTypes.func.isRequired, // (dockingStationId) => void
   style: Style,
 };
