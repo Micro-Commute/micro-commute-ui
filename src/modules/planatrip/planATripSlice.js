@@ -400,6 +400,7 @@ function mapRouteOptionForSelect(providers, entity) {
     transportType: entity.transportType,
     nearByStations: entity.nearByStations,
     selectedStationIds: entity.selectedStationIds,
+    details: entity.details,
   });
   switch (entity.transportType) {
     case TransportType.DOCKED_EBIKE:
