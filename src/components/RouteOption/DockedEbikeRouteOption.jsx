@@ -19,7 +19,7 @@ export default function DockedEbikeRouteOption({
     walkingTimeFromStartingPoint,
     cyclingTimeStationToStation,
     walkingTimeToDestination,
-  } = routeOption.details;
+  } = routeOption.details || {};
 
   const fromDockingStations = routeOption.nearByStations.startingPoint;
   const toDockingStations = routeOption.nearByStations.destination;
@@ -27,7 +27,8 @@ export default function DockedEbikeRouteOption({
   const toDockingStationId = routeOption.selectedStationIds.destination;
 
   function handleArticleClick(event) {
-    if (event.target instanceof HTMLInputElement) { // Do not send click when clicking on an input element
+    // Do not send click when clicking on an input element
+    if (event.target instanceof HTMLInputElement) {
       return;
     }
     onClick();
@@ -137,11 +138,12 @@ export default function DockedEbikeRouteOption({
 DockedEbikeRouteOption.propTypes = {
   routeOption: RouteOptionPropType,
   isSelected: PropTypes.bool.isRequired,
-  onClick: PropTypes.func.isRequired,
-  onStartingPointStationChange: PropTypes.func.isRequired,
-  onDestinationStationChange: PropTypes.func.isRequired,
+  onClick: PropTypes.func.isRequired, // () => void
+  onStartingPointStationChange: PropTypes.func.isRequired, // (stationId) => void
+  onDestinationStationChange: PropTypes.func.isRequired, // (stationId) => void
 };
 
+/** Pre-condition: options.length > 0 */
 function DockingStationSelector({ label, value, stations, onChange, style }) {
   const labelId = useId();
 
@@ -149,26 +151,26 @@ function DockingStationSelector({ label, value, stations, onChange, style }) {
     let stationId = e.target.value;
     onChange(stationId);
   };
-  
+
   return (
     <div style={style}>
-    <label style={{ display: "block" }} id={labelId}>
-      {label}
-    </label>
-    <select
-      value={value}
-      onChange={handleChange}
-      // Prevent DockedEbikeRouteOption 'onClick' when clicking on this select
-      onClick={(e) => e.stopPropagation()}
-      aria-labelledby={labelId}
-    >
-      {stations.map((station) => (
-        <option value={station.id} key={station.id}>
-          {station.name}
-        </option>
-      ))}
-    </select>
-  </div>
+      <label style={{ display: "block" }} id={labelId}>
+        {label}
+      </label>
+      <select
+        value={value}
+        onChange={handleChange}
+        // Prevent DockedEbikeRouteOption 'onClick' when clicking on this select
+        onClick={(e) => e.stopPropagation()}
+        aria-labelledby={labelId}
+      >
+        {stations.map((station) => (
+          <option value={station.id} key={station.id}>
+            {station.name}
+          </option>
+        ))}
+      </select>
+    </div>
   );
 }
 
@@ -179,7 +181,7 @@ DockingStationSelector.propTypes = {
     PropTypes.shape({
       id: PropTypes.string.isRequired,
       name: PropTypes.string.isRequired,
-    })
+    }),
   ).isRequired,
   onChange: PropTypes.func.isRequired, // (dockingStationId) => void
   style: Style,

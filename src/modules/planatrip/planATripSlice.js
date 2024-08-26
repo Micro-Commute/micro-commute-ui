@@ -378,14 +378,14 @@ function mapDockedEbikeRouteOptionFromGraphQl(data) {
         data.toDockingStations.length > 0 ? data.toDockingStations[0].id : null,
     },
     details: {
-      leaveAt: "DateTime",
-      arriveAt: "DateTime",
-      takeBikeAt: "DateTime",
-      parkBikeAt: "DateTime",
-      travelTimeTotal: "Duration",
-      walkingTimeFromStartingPoint: "Duration",
-      cyclingTimeStationToStation: "Duration",
-      walkingTimeToDestination: "Duration",
+      leaveAt: "2024-08-24T12:10",
+      arriveAt: "2024-08-24T12:24",
+      takeBikeAt: "2024-08-24T12:12",
+      parkBikeAt: "2024-08-24T12:22",
+      travelTimeTotal: "PT0H14M0S",
+      walkingTimeFromStartingPoint: "PT0H1M0S",
+      cyclingTimeStationToStation: "PT0H10M0S",
+      walkingTimeToDestination: "PT0H3M0S",
     },
   };
 }
