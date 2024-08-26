@@ -2,6 +2,7 @@ import React, { useId } from "react";
 import PropTypes from "prop-types";
 import Style from "react-style-proptype";
 import { RouteOptionPropType } from "../../modules/types";
+import DockedEbikeRouteOptionDetails from "./DockedEbikeRouteOptionDetails"; 
 
 export default function DockedEbikeRouteOption({
   routeOption,
@@ -10,17 +11,6 @@ export default function DockedEbikeRouteOption({
   onStartingPointStationChange,
   onDestinationStationChange,
 }) {
-  const {
-    leaveAt,
-    arriveAt,
-    takeBikeAt,
-    parkBikeAt,
-    travelTimeTotal,
-    walkingTimeFromStartingPoint,
-    cyclingTimeStationToStation,
-    walkingTimeToDestination,
-  } = routeOption.details || {};
-
   const fromDockingStations = routeOption.nearByStations.startingPoint;
   const toDockingStations = routeOption.nearByStations.destination;
   const fromDockingStationId = routeOption.selectedStationIds.startingPoint;
@@ -64,69 +54,11 @@ export default function DockedEbikeRouteOption({
               style={{ flex: 1 }}
             />
           </div>
-          <div
-            style={{
-              marginTop: "16px",
-              borderTop: "1px solid #ccc",
-              paddingTop: "16px",
-              display: "grid",
-              gridTemplateColumns: "1fr 1fr 1fr",
-              gridGap: "16px",
-            }}
-          >
-            {/* Column 1 */}
-            <div style={{ display: "flex", flexDirection: "column" }}>
-              <div>
-                <div>Departure and arrival times</div>
-                <div>{`${leaveAt} – ${arriveAt}`}</div>
-              </div>
-              <div
-                style={{
-                  marginTop: "8px",
-                  display: "flex",
-                  alignItems: "center",
-                }}
-              >
-                <div style={{ display: "flex", alignItems: "center" }}>
-                  <div style={{ textAlign: "center" }}>
-                    <div>🧍</div>
-                    <div>{walkingTimeFromStartingPoint}</div>
-                  </div>
-                  <div style={{ margin: "0 8px" }}>{">"}</div>
-                  <div style={{ textAlign: "center" }}>
-                    <div>🚴</div>
-                    <div>{cyclingTimeStationToStation}</div>
-                  </div>
-                  <div style={{ margin: "0 8px" }}>{">"}</div>
-                  <div style={{ textAlign: "center" }}>
-                    <div>🧍</div>
-                    <div>{walkingTimeToDestination}</div>
-                  </div>
-                </div>
-              </div>
-            </div>
 
-            {/* Column 2 */}
-            <div>
-              <div>
-                <div>Total travel time</div>
-                <div>{travelTimeTotal}</div>
-              </div>
-              <div style={{ marginTop: "8px" }}></div>
-            </div>
-
-            {/* Column 3 */}
-            <div style={{ display: "flex", flexDirection: "column" }}>
-              <div>
-                <div>Take bike at</div>
-                <div>{takeBikeAt}</div>
-              </div>
-              <div style={{ marginTop: "8px" }}>
-                <div>Park bike at</div>
-                <div>{parkBikeAt}</div>
-              </div>
-            </div>
-          </div>
+          {/* Render the details only if routeOption.details is not null and the option is selected */}
+          {isSelected && routeOption.details && (
+            <DockedEbikeRouteOptionDetails routeOption={routeOption} />
+          )}
         </div>
       ) : (
         <em>No nearby docking stations.</em>
