@@ -11,15 +11,15 @@ export default function DockedEbikeRouteOption({
   onDestinationStationChange,
 }) {
   const {
-    departureTime,
-    arrivalTime,
-    totalTravelTime,
-    takeBikeTime,
-    parkBikeTime,
-    walkingToDockingStation,
-    bikingTime,
-    walkingToDestination,
-  } = routeOption.travelTimes;
+    leaveAt,
+    arriveAt,
+    takeBikeAt,
+    parkBikeAt,
+    travelTimeTotal,
+    walkingTimeFromStartingPoint,
+    cyclingTimeStationToStation,
+    walkingTimeToDestination,
+  } = routeOption.details;
 
   const fromDockingStations = routeOption.nearByStations.startingPoint;
   const toDockingStations = routeOption.nearByStations.destination;
@@ -27,7 +27,7 @@ export default function DockedEbikeRouteOption({
   const toDockingStationId = routeOption.selectedStationIds.destination;
 
   function handleArticleClick(event) {
-    if (event.target instanceof HTMLInputElement) {
+    if (event.target instanceof HTMLInputElement) { // Do not send click when clicking on an input element
       return;
     }
     onClick();
@@ -77,7 +77,7 @@ export default function DockedEbikeRouteOption({
             <div style={{ display: "flex", flexDirection: "column" }}>
               <div>
                 <div>Departure and arrival times</div>
-                <div>{`${departureTime} – ${arrivalTime}`}</div>
+                <div>{`${leaveAt} – ${arriveAt}`}</div>
               </div>
               <div
                 style={{
@@ -89,17 +89,17 @@ export default function DockedEbikeRouteOption({
                 <div style={{ display: "flex", alignItems: "center" }}>
                   <div style={{ textAlign: "center" }}>
                     <div>🧍</div>
-                    <div>{walkingToDockingStation}</div>
+                    <div>{walkingTimeFromStartingPoint}</div>
                   </div>
                   <div style={{ margin: "0 8px" }}>{">"}</div>
                   <div style={{ textAlign: "center" }}>
                     <div>🚴</div>
-                    <div>{bikingTime}</div>
+                    <div>{cyclingTimeStationToStation}</div>
                   </div>
                   <div style={{ margin: "0 8px" }}>{">"}</div>
                   <div style={{ textAlign: "center" }}>
                     <div>🧍</div>
-                    <div>{walkingToDestination}</div>
+                    <div>{walkingTimeToDestination}</div>
                   </div>
                 </div>
               </div>
@@ -109,7 +109,7 @@ export default function DockedEbikeRouteOption({
             <div>
               <div>
                 <div>Total travel time</div>
-                <div>{totalTravelTime}</div>
+                <div>{travelTimeTotal}</div>
               </div>
               <div style={{ marginTop: "8px" }}></div>
             </div>
@@ -118,11 +118,11 @@ export default function DockedEbikeRouteOption({
             <div style={{ display: "flex", flexDirection: "column" }}>
               <div>
                 <div>Take bike at</div>
-                <div>{takeBikeTime}</div>
+                <div>{takeBikeAt}</div>
               </div>
               <div style={{ marginTop: "8px" }}>
                 <div>Park bike at</div>
-                <div>{parkBikeTime}</div>
+                <div>{parkBikeAt}</div>
               </div>
             </div>
           </div>
@@ -143,21 +143,32 @@ DockedEbikeRouteOption.propTypes = {
 };
 
 function DockingStationSelector({ label, value, stations, onChange, style }) {
+  const labelId = useId();
+
+  const handleChange = (e) => {
+    let stationId = e.target.value;
+    onChange(stationId);
+  };
+  
   return (
     <div style={style}>
-      <label style={{ display: "block" }}>{label}</label>
-      <select
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        onClick={(e) => e.stopPropagation()}
-      >
-        {stations.map((station) => (
-          <option value={station.id} key={station.id}>
-            {station.name}
-          </option>
-        ))}
-      </select>
-    </div>
+    <label style={{ display: "block" }} id={labelId}>
+      {label}
+    </label>
+    <select
+      value={value}
+      onChange={handleChange}
+      // Prevent DockedEbikeRouteOption 'onClick' when clicking on this select
+      onClick={(e) => e.stopPropagation()}
+      aria-labelledby={labelId}
+    >
+      {stations.map((station) => (
+        <option value={station.id} key={station.id}>
+          {station.name}
+        </option>
+      ))}
+    </select>
+  </div>
   );
 }
 
@@ -170,6 +181,6 @@ DockingStationSelector.propTypes = {
       name: PropTypes.string.isRequired,
     })
   ).isRequired,
-  onChange: PropTypes.func.isRequired,
+  onChange: PropTypes.func.isRequired, // (dockingStationId) => void
   style: Style,
 };

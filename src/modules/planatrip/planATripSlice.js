@@ -60,15 +60,15 @@ import { TransportType } from "../types";
  */
 
 /**
- * @typedef {object} TravelTimes
- * @property {Duration} departureTime
- * @property {Duration} arrivalTime
- * @property {Duration} takeBikeTime
- * @property {Duration} parkBikeTime
- * @property {Duration} totalTravelTime
- * @property {Duration} walkingToDockingStation
- * @property {Duration} bikingTime
- * @property {Duration} walkingToDestination
+ * @typedef {object} DockedEBikeRouteOptionDetails
+ * @property {DateTime} leaveAt
+ * @property {DateTime} arriveAt
+ * @property {DateTime} takeBikeAt
+ * @property {DateTime} parkBikeAt
+ * @property {Duration} travelTimeTotal
+ * @property {Duration} walkingTimeFromStartingPoint
+ * @property {Duration} cyclingTimeStationToStation
+ * @property {Duration} walkingTimeToDestination
  */
 
 /**
@@ -77,7 +77,7 @@ import { TransportType } from "../types";
  * @property {TransportType.DOCKED_EBIKE} transportType
  * @property {{startingPoint:DockingStation[],destination:DockingStation[]}} nearByStations
  * @property {{startingPoint:string|null,destination:string|null}} selectedStationIds
- * @property {TravelTimes} travelTimes
+ * @property {DockedEBikeRouteOptionDetails|null} details
  */
 
 /**
@@ -377,15 +377,15 @@ function mapDockedEbikeRouteOptionFromGraphQl(data) {
       destination:
         data.toDockingStations.length > 0 ? data.toDockingStations[0].id : null,
     },
-    travelTimes: {
-      departureTime: "PT0H5M0S",
-      arrivalTime: "PT0H30M0S",
-      takeBikeTime: "PT0H3M0S",
-      parkBikeTime: "PT0H2M0S",
-      totalTravelTime: "PT0H40M0S",
-      walkingToDockingStation: "PT0H10M0S",
-      bikingTime: "PT0H20M0S",
-      walkingToDestination: "PT0H5M0S",
+    details: {
+      leaveAt: "DateTime",
+      arriveAt: "DateTime",
+      takeBikeAt: "DateTime",
+      parkBikeAt: "DateTime",
+      travelTimeTotal: "Duration",
+      walkingTimeFromStartingPoint: "Duration",
+      cyclingTimeStationToStation: "Duration",
+      walkingTimeToDestination: "Duration",
     },
   };
 }
