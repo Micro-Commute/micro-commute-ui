@@ -34,6 +34,16 @@ const MockedState = {
           startingPoint: "foo",
           destination: "qux",
         },
+        details: {
+          leaveAt: "2024-08-24T12:10",
+          arriveAt: "2024-08-24T12:24",
+          takeBikeAt: "2024-08-24T12:12",
+          parkBikeAt: "2024-08-24T12:22",
+          travelTimeTotal: "PT0H14M0S",
+          walkingTimeFromStartingPoint: "PT0H1M0S",
+          cyclingTimeStationToStation: "PT0H10M0S",
+          walkingTimeToDestination: "PT0H3M0S",
+        },
       },
       {
         providerId: "provider222",
@@ -51,6 +61,16 @@ const MockedState = {
         selectedStationIds: {
           startingPoint: "ipsum",
           destination: "dolor",
+        },
+        details: {
+          leaveAt: "2024-08-24T12:10",
+          arriveAt: "2024-08-24T12:24",
+          takeBikeAt: "2024-08-24T12:12",
+          parkBikeAt: "2024-08-24T12:22",
+          travelTimeTotal: "PT0H14M0S",
+          walkingTimeFromStartingPoint: "PT0H1M0S",
+          cyclingTimeStationToStation: "PT0H10M0S",
+          walkingTimeToDestination: "PT0H3M0S",
         },
       },
     ],
