@@ -1,5 +1,13 @@
 import * as React from "react";
-import RouteMap from "../components/RouteMap/RouteMap";
+import RouteInputForm from "../components/RouteInputForm/RouteInputForm";
+import {
+  arriveByDateTimeChanged,
+  destinationChanged,
+  selectArriveBy,
+  startingPointChanged,
+} from "../modules/planatrip/planATripSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { Link } from "gatsby";
 
 const pageStyles = {
   color: "#232129",
@@ -19,19 +27,27 @@ const paragraphStyles = {
 };
 
 const IndexPage = () => {
+  const dispatch = useDispatch();
+  const arriveBy = useSelector(selectArriveBy);
   return (
     <main style={pageStyles}>
-      <h1 style={headingStyles}>
-        Micro-Commute
-        <br />
-        <span style={headingAccentStyles}>
-          — shared mobility for your commute 🌱🚴🏡
-        </span>
-      </h1>
-      <p style={paragraphStyles}>
-        Solving the first and last mile problem for urban commuters.
-      </p>
-      <RouteMap />
+      <RouteInputForm
+        onStartingPointChange={(location) => {
+          // noinspection JSCheckFunctionSignatures
+          dispatch(startingPointChanged(location));
+        }}
+        onDestinationChange={(location) => {
+          // noinspection JSCheckFunctionSignatures
+          dispatch(destinationChanged(location));
+        }}
+        onArriveByDateTimeChange={(dateTime) => {
+          // noinspection JSCheckFunctionSignatures
+          dispatch(arriveByDateTimeChanged(dateTime));
+        }}
+        arriveByDateTimeValue={arriveBy}
+        orientation="row"
+      />
+      <Link to="/plan-a-trip">Plan a trip</Link>
     </main>
   );
 };
