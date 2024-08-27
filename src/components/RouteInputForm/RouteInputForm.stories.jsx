@@ -8,7 +8,7 @@ export default {
   tags: ["autodocs"],
 };
 
-export const Default = {
+export const Row = {
   args: {
     onStartingPointChange: fn(),
     onDestinationChange: fn(),
@@ -31,6 +31,36 @@ export const Default = {
         onDestinationChange={args.onDestinationChange}
         onArriveByDateTimeChange={onArriveByDateTimeChange}
         arriveByDateTimeValue={arriveByDateTime}
+        orientation="row"
+      />
+    );
+  },
+};
+
+export const Column = {
+  args: {
+    onStartingPointChange: fn(),
+    onDestinationChange: fn(),
+    onArriveByDateTimeChange: fn(),
+    arriveByDateTimeValue: "2023-09-10T10:00",
+  },
+  render: function (args) {
+    const [arriveByDateTime, setArriveByDateTime] = useState(
+      args.arriveByDateTimeValue,
+    );
+
+    function onArriveByDateTimeChange(datetime) {
+      args.onArriveByDateTimeChange(datetime); // fn()
+      setArriveByDateTime(datetime);
+    }
+
+    return (
+      <RouteInputForm
+        onStartingPointChange={args.onStartingPointChange}
+        onDestinationChange={args.onDestinationChange}
+        onArriveByDateTimeChange={onArriveByDateTimeChange}
+        arriveByDateTimeValue={arriveByDateTime}
+        orientation="column"
       />
     );
   },

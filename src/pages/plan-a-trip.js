@@ -56,6 +56,7 @@ export default function PlanATripPage() {
             dispatch(arriveByDateTimeChanged(dateTime));
           }}
           arriveByDateTimeValue={arriveBy}
+          orientation="column"
         />
         {(() => {
           switch (loadingStatus) {
