@@ -5,22 +5,6 @@ import RouteOptionsContainer from "./RouteOptionContainer";
 import { planATripSlice } from "../../modules/planatrip/planATripSlice";
 
 const MockedState = {
-  startingPoint: {
-    // prettier-ignore
-    address: "London Eye, Westminster Bridge Road, Lambeth, London Borough of Lambeth, London, Greater London, England, SE1 7PB, United Kingdom",
-    coordinates: {
-      latitude: 51.5033416,
-      longitude: -0.11967649999999999,
-    },
-  },
-  destination: {
-    // prettier-ignore
-    address: "Queen Mary University of London, 327, Mile End Road, Globe Town, Mile End, London Borough of Tower Hamlets, London, Greater London, England, E1 4NS, United Kingdom",
-    coordinates: {
-      latitude: 51.52492685,
-      longitude: -0.03924405317429028,
-    },
-  },
   providers: {
     provider111: {
       id: "provider111",

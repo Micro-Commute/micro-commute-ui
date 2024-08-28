@@ -4,6 +4,11 @@ import { Provider } from "react-redux";
 import React from "react";
 import { initStore } from "../../modules/store";
 import { expect, userEvent, within } from "@storybook/test";
+import {
+  arriveByDateTimeChanged,
+  destinationChanged,
+  startingPointChanged,
+} from "../../modules/planatrip/planATripSlice";
 
 export default {
   title: "Pages/PlanATrip",
@@ -35,6 +40,38 @@ export default {
 
 export const Default = {
   decorators: [(story) => <Provider store={initStore()}>{story()}</Provider>],
+};
+
+export const PreLoaded = {
+  decorators: [
+    (story) => {
+      const store = initStore();
+      // noinspection JSCheckFunctionSignatures
+      store.dispatch(
+        startingPointChanged({
+          // prettier-ignore
+          address: "St Matthew's Church, St. Ann's Street, Westminster, Millbank, London, Greater London, England, SW1P 2BT, United Kingdom",
+          coordinates: {
+            latitude: 51.49708745,
+            longitude: -0.13069852861405845,
+          },
+        }),
+      );
+      // noinspection JSCheckFunctionSignatures
+      store.dispatch(
+        destinationChanged({
+          // prettier-ignore
+          address: "Queen Mary University of London, 327, Mile End Road, Globe Town, Mile End, London Borough of Tower Hamlets, London, Greater London, England, E1 4NS, United Kingdom",
+          coordinates: {
+            latitude: 51.52492685,
+            longitude: -0.03924405317429028,
+          },
+        }),
+      );
+      store.dispatch(arriveByDateTimeChanged(""));
+      return <Provider store={store}>{story()}</Provider>;
+    },
+  ],
 };
 
 export const TestHappyPath = {
@@ -106,7 +143,8 @@ export const TestHappyPath = {
   },
 };
 
-TestHappyPath.parameters = {
+// Note: use same mocks for 'TestHappyPath' and 'PreLoaded' stories.
+TestHappyPath.parameters = PreLoaded.parameters = {
   mockData: [
     {
       url: "https://nominatim.openstreetmap.org/search?q=query&format=json",
