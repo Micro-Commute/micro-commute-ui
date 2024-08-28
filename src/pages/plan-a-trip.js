@@ -43,19 +43,21 @@ export default function PlanATripPage() {
     <main style={{ height: "100vh" }}>
       <aside style={{ width: "350px", float: "left" }}>
         <RouteInputForm
+          startingPointValue={startingPoint}
           onStartingPointChange={(location) => {
             // noinspection JSCheckFunctionSignatures
             dispatch(startingPointChanged(location));
           }}
+          destinationValue={destination}
           onDestinationChange={(location) => {
             // noinspection JSCheckFunctionSignatures
             dispatch(destinationChanged(location));
           }}
+          arriveByDateTimeValue={arriveBy}
           onArriveByDateTimeChange={(dateTime) => {
             // noinspection JSCheckFunctionSignatures
             dispatch(arriveByDateTimeChanged(dateTime));
           }}
-          arriveByDateTimeValue={arriveBy}
         />
         {(() => {
           switch (loadingStatus) {
