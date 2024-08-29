@@ -57,13 +57,13 @@ export default function LocationInput({
         value={(() => {
           switch (state) {
             case "idle":
-              return  address;
+              return address;
             case "edit":
               return searchTerm;
             default:
               throw new Error(`Unexpected state: ${state}`);
           }
-        } )()}
+        })()}
         onChange={handleTextInputChange}
         onBlur={() => setState("idle")}
         onFocus={() => setState("edit")}
