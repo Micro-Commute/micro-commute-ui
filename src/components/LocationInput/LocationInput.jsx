@@ -14,15 +14,15 @@ export default function LocationInput({
 }) {
   const [searchTerm, setSearchTerm] = useState("");
   const [results, setResults] = useState([]);
-  const [focus, setFocus] = useState(false);
+  const [state, setState] = useState("idle"); // One of [idle, edit]
   const address = locationValue ? locationValue.address : "";
 
   useEffect(() => {
-    if (focus) {
+    if (state === "edit") {
       const func = setTimeout(searchAddress, searchDelayMillis);
       return () => clearTimeout(func);
     }
-  }, [focus, searchTerm]);
+  }, [state, searchTerm]);
 
   if (!isDomAvailable()) {
     // Leaflet-geosearch not available with SSR
@@ -54,10 +54,19 @@ export default function LocationInput({
       <input
         type="text"
         placeholder="Enter address"
-        value={searchTerm || address || ""}
+        value={(() => {
+          switch (state) {
+            case "idle":
+              return  address;
+            case "edit":
+              return searchTerm;
+            default:
+              throw new Error(`Unexpected state: ${state}`);
+          }
+        } )()}
         onChange={handleTextInputChange}
-        onBlur={() => setFocus(false)}
-        onFocus={() => setFocus(true)}
+        onBlur={() => setState("idle")}
+        onFocus={() => setState("edit")}
         aria-labelledby={ariaLabelledBy || undefined}
         aria-haspopup="listbox"
         aria-expanded={results.length > 0}
