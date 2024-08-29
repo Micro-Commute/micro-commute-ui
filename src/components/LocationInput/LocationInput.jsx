@@ -7,20 +7,22 @@ import { OpenStreetMapProvider } from "leaflet-geosearch";
 import { isDomAvailable } from "../../modules/util";
 
 export default function LocationInput({
+  locationValue,
   onLocationChange,
   searchDelayMillis = 500,
   ariaLabelledBy = null,
 }) {
-  const [address, setAddress] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
   const [results, setResults] = useState([]);
-  const [focus, setFocus] = useState(false);
+  const [state, setState] = useState("idle"); // One of [idle, edit]
+  const address = locationValue ? locationValue.address : "";
 
   useEffect(() => {
-    if (focus) {
+    if (state === "edit") {
       const func = setTimeout(searchAddress, searchDelayMillis);
       return () => clearTimeout(func);
     }
-  }, [focus, address]);
+  }, [state, searchTerm]);
 
   if (!isDomAvailable()) {
     // Leaflet-geosearch not available with SSR
@@ -30,17 +32,17 @@ export default function LocationInput({
   const provider = new OpenStreetMapProvider();
 
   const handleTextInputChange = (event) => {
-    setAddress(event.target.value);
+    setSearchTerm(event.target.value);
   };
 
   function searchAddress() {
-    provider.search({ query: address }).then(setResults);
+    provider.search({ query: searchTerm }).then(setResults);
   }
 
   const handleResultClick = (result) => {
     const { x, y, label } = result;
     setResults([]);
-    setAddress(label);
+    setSearchTerm("");
     onLocationChange({
       address: label,
       coordinates: { latitude: y, longitude: x },
@@ -52,10 +54,19 @@ export default function LocationInput({
       <input
         type="text"
         placeholder="Enter address"
-        value={address}
+        value={(() => {
+          switch (state) {
+            case "idle":
+              return address;
+            case "edit":
+              return searchTerm;
+            default:
+              throw new Error(`Unexpected state: ${state}`);
+          }
+        })()}
         onChange={handleTextInputChange}
-        onBlur={() => setFocus(false)}
-        onFocus={() => setFocus(true)}
+        onBlur={() => setState("idle")}
+        onFocus={() => setState("edit")}
         aria-labelledby={ariaLabelledBy || undefined}
         aria-haspopup="listbox"
         aria-expanded={results.length > 0}
@@ -78,6 +89,14 @@ export default function LocationInput({
 }
 
 LocationInput.propTypes = {
+  locationValue: PropTypes.shape({
+    address: PropTypes.string,
+    coordinates: PropTypes.shape({
+      latitude: PropTypes.number.isRequired,
+      longitude: PropTypes.number.isRequired,
+    }),
+  }),
+  // ({address:str,coordinates:{longitude:float,latitude:float}}) -> void
   onLocationChange: PropTypes.func.isRequired,
   searchDelayMillis: PropTypes.number.isRequired,
   ariaLabelledBy: PropTypes.string,

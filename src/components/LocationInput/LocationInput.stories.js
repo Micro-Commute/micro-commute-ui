@@ -10,6 +10,7 @@ export default {
 
 export const Default = {
   args: {
+    locationValue: null,
     onLocationChange: fn(),
   },
 };
