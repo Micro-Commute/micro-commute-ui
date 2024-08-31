@@ -55,10 +55,12 @@ function DockedEbikeRouteOptionDetails({ routeOption }) {
 
   const pickupRatio =
     (usualAvailabilityAtBikePickupStation?.standardBikes +
-      usualAvailabilityAtBikePickupStation?.electricBikes) / pickupStationCapacity;
+      usualAvailabilityAtBikePickupStation?.electricBikes) /
+    pickupStationCapacity;
 
   const dropOffRatio =
-    (usualAvailabilityAtBikeDropOffStation?.emptyDocks || 0) / dropOffStationCapacity;
+    (usualAvailabilityAtBikeDropOffStation?.emptyDocks || 0) /
+    dropOffStationCapacity;
 
   return (
     <div
@@ -67,7 +69,7 @@ function DockedEbikeRouteOptionDetails({ routeOption }) {
         borderTop: "1px solid #ccc",
         paddingTop: "16px",
         display: "grid",
-        gridTemplateColumns: "1fr 1fr 1fr 1fr", 
+        gridTemplateColumns: "1fr 1fr 1fr 1fr",
         gridGap: "16px",
       }}
     >
@@ -141,9 +143,7 @@ function DockedEbikeRouteOptionDetails({ routeOption }) {
           </div>
         </div>
         <div style={{ marginTop: "8px" }}>
-          <div>
-            Usual availability
-          </div>
+          <div>Usual availability</div>
           <div>
             {usualAvailabilityAtBikeDropOffStation?.emptyDocks} /{" "}
             {dropOffStationCapacity} empty docks{" "}
