@@ -23,6 +23,12 @@ function formatDuration(isoDuration) {
   return `${totalMinutes}m`;
 }
 
+function getColorBasedOnRatio(ratio) {
+  if (ratio < 0.2) return "red";
+  if (ratio < 0.8) return "orange";
+  return "green";
+}
+
 function DockedEbikeRouteOptionDetails({ routeOption }) {
   const {
     leaveAt,
@@ -47,6 +53,13 @@ function DockedEbikeRouteOptionDetails({ routeOption }) {
     (usualAvailabilityAtBikeDropOffStation?.electricBikes || 0) +
     (usualAvailabilityAtBikeDropOffStation?.emptyDocks || 0);
 
+  const pickupRatio =
+    (usualAvailabilityAtBikePickupStation?.standardBikes +
+      usualAvailabilityAtBikePickupStation?.electricBikes) / pickupStationCapacity;
+
+  const dropOffRatio =
+    (usualAvailabilityAtBikeDropOffStation?.emptyDocks || 0) / dropOffStationCapacity;
+
   return (
     <div
       style={{
@@ -54,7 +67,7 @@ function DockedEbikeRouteOptionDetails({ routeOption }) {
         borderTop: "1px solid #ccc",
         paddingTop: "16px",
         display: "grid",
-        gridTemplateColumns: "1fr 1fr 1fr 1fr",  
+        gridTemplateColumns: "1fr 1fr 1fr 1fr", 
         gridGap: "16px",
       }}
     >
@@ -120,13 +133,7 @@ function DockedEbikeRouteOptionDetails({ routeOption }) {
             / {pickupStationCapacity} bikes{" "}
             <span
               style={{
-                color:
-                  (usualAvailabilityAtBikePickupStation?.standardBikes +
-                    usualAvailabilityAtBikePickupStation?.electricBikes) /
-                    pickupStationCapacity >
-                  0.2
-                    ? "green"
-                    : "red",
+                color: getColorBasedOnRatio(pickupRatio),
               }}
             >
               ●
@@ -139,15 +146,10 @@ function DockedEbikeRouteOptionDetails({ routeOption }) {
           </div>
           <div>
             {usualAvailabilityAtBikeDropOffStation?.emptyDocks} /{" "}
-            {dropOffStationCapacity} spots{" "}
+            {dropOffStationCapacity} empty docks{" "}
             <span
               style={{
-                color:
-                  (usualAvailabilityAtBikeDropOffStation?.emptyDocks || 0) /
-                    dropOffStationCapacity >
-                  0.2
-                    ? "green"
-                    : "red",
+                color: getColorBasedOnRatio(dropOffRatio),
               }}
             >
               ●
