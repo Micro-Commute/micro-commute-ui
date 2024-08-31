@@ -1,31 +1,107 @@
-import {DockedEbikeRoutePropType} from "../../lib/route";
-import {Marker, useMap} from "react-leaflet";
+import { CircleMarker, Marker, Polyline, useMap } from "react-leaflet";
 import React from "react";
 import L from "leaflet";
+import { CoordinatesPropType, RouteOptionPropType } from "../../modules/types";
 
-export default function DockedEbikeRouteMapFragment({route}) {
-  const coordinates = [
-    route.startingPoint,
-    route.startingPointDockingStation,
-    route.destinationDockingStation,
-    route.destination,
+export default function DockedEbikeRouteMapFragment({
+  startingPoint,
+  destination,
+  routeOption,
+}) {
+  const stationAtStartingPoint = getDockingStationAtStartingPoint(routeOption);
+  const stationAtDestination = getDockingStationAtDestination(routeOption);
+  const latLng = ({ coordinates }) => [
+    coordinates.latitude,
+    coordinates.longitude,
   ];
 
+  const nearByStationCoords = {
+    startingPoint: routeOption.nearByStations.startingPoint.map(latLng),
+    destination: routeOption.nearByStations.destination.map(latLng),
+  };
+
+  const routeCoords = {
+    startingPoint: latLng(startingPoint),
+    fromDockingStation: latLng(stationAtStartingPoint),
+    toDockingStation: latLng(stationAtDestination),
+    destination: latLng(destination),
+  };
+
   const map = useMap();
-  map.fitBounds(new L.LatLngBounds(coordinates), {padding: [25, 25]});
-  L.polyline(coordinates).addTo(map)
+  const bounds = new L.LatLngBounds(Object.values(routeCoords));
+  map.fitBounds(bounds, { padding: [50, 50] });
 
   return (
     <>
-      <Marker position={[51.505, -0.09]}/>
-      <Marker position={route.startingPoint}/>
-      <Marker position={route.startingPointDockingStation}/>
-      <Marker position={route.destinationDockingStation}/>
-      <Marker position={route.destination}/>
+      {nearByStationCoords.startingPoint.map((coords) => (
+        <CircleMarker
+          center={coords}
+          radius={4}
+          pathOptions={{ fillColor: "white", fillOpacity: 0.75, opacity: 0.75 }}
+        />
+      ))}
+      {nearByStationCoords.destination.map((coords) => (
+        <CircleMarker
+          center={coords}
+          radius={4}
+          pathOptions={{ fillColor: "white", fillOpacity: 0.75, opacity: 0.75 }}
+        />
+      ))}
+      <Polyline
+        positions={Object.values(routeCoords)}
+        pathOptions={{ weight: 8 }}
+      />
+      <CircleMarker
+        center={routeCoords.startingPoint}
+        radius={4}
+        pathOptions={{ fillColor: "white", fillOpacity: 0.5 }}
+      />
+      <CircleMarker
+        center={routeCoords.fromDockingStation}
+        radius={4}
+        pathOptions={{ fillColor: "white", fillOpacity: 0.5 }}
+      />
+      <CircleMarker
+        center={routeCoords.toDockingStation}
+        radius={4}
+        pathOptions={{ fillColor: "white", fillOpacity: 0.5 }}
+      />
+      <CircleMarker
+        center={routeCoords.destination}
+        radius={5}
+        pathOptions={{ color: "black", fillColor: "white", fillOpacity: 1.0 }}
+      />
+      <Marker
+        alt="Starting point marker"
+        title={startingPoint.address}
+        position={routeCoords.startingPoint}
+      />
     </>
   );
 }
 
 DockedEbikeRouteMapFragment.propTypes = {
-  route: DockedEbikeRoutePropType.isRequired,
+  startingPoint: CoordinatesPropType,
+  destination: CoordinatesPropType,
+  routeOption: RouteOptionPropType,
 };
+
+/**
+ * @param {DockedEBikeRouteOptionDTO} routeOption
+ * @return {DockingStation}
+ */
+function getDockingStationAtStartingPoint(routeOption) {
+  const stationId = routeOption.selectedStationIds.startingPoint;
+  const nearByStations = routeOption.nearByStations;
+  return nearByStations.startingPoint.find((s) => s.id === stationId);
+}
+
+/**
+ * @param {DockedEBikeRouteOptionDTO} routeOption
+ * @return {DockingStation}
+ */
+function getDockingStationAtDestination(routeOption) {
+  const stationId = routeOption.selectedStationIds.destination;
+  const nearByStations = routeOption.nearByStations;
+  return nearByStations.destination.find((s) => s.id === stationId);
+}

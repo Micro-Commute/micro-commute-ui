@@ -1,25 +1,64 @@
-import React from 'react';
+import React from "react";
 import PropTypes from "prop-types";
-import LocationInput from '../LocationInput/LocationInput';
+import LocationInput from "../LocationInput/LocationInput";
+import DateTimeInput from "../DateTimeInput/DateTimeInput";
 
-const RouteInputForm = ({ onStartingPointChange, onDestinationChange }) => {
+const RouteInputForm = ({
+  startingPointValue,
+  onStartingPointChange,
+  destinationValue,
+  onDestinationChange,
+  arriveByDateTimeValue,
+  onArriveByDateTimeChange,
+}) => {
   return (
     <form>
       <div>
-        <label>Starting Point:</label>
-        <LocationInput onLocationChange={onStartingPointChange} />
+        <label id="starting-point-label">Starting point</label>
+        <LocationInput
+          locationValue={startingPointValue}
+          onLocationChange={onStartingPointChange}
+          ariaLabelledBy="starting-point-label"
+        />
       </div>
       <div>
-        <label>Destination:</label>
-        <LocationInput onLocationChange={onDestinationChange} />
+        <label id="destination-label">Destination</label>
+        <LocationInput
+          locationValue={destinationValue}
+          onLocationChange={onDestinationChange}
+          ariaLabelledBy="destination-label"
+        />
+      </div>
+      <div>
+        <label id="arrive-by-label">Arrive By</label>
+        <DateTimeInput
+          value={arriveByDateTimeValue}
+          onChange={onArriveByDateTimeChange}
+        />
       </div>
     </form>
   );
-}
+};
 
 RouteInputForm.propTypes = {
+  startingPointValue: PropTypes.shape({
+    address: PropTypes.string,
+    coordinates: PropTypes.shape({
+      latitude: PropTypes.number.isRequired,
+      longitude: PropTypes.number.isRequired,
+    }),
+  }),
   onStartingPointChange: PropTypes.func.isRequired,
+  destinationValue: PropTypes.shape({
+    address: PropTypes.string,
+    coordinates: PropTypes.shape({
+      latitude: PropTypes.number.isRequired,
+      longitude: PropTypes.number.isRequired,
+    }),
+  }),
   onDestinationChange: PropTypes.func.isRequired,
-}
+  arriveByDateTimeValue: PropTypes.string.isRequired,
+  onArriveByDateTimeChange: PropTypes.func.isRequired,
+};
 
 export default RouteInputForm;

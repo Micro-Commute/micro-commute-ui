@@ -1,34 +1,64 @@
-import React, {useState} from "react";
+import React, { useId } from "react";
 import PropTypes from "prop-types";
 import Style from "react-style-proptype";
+import { RouteOptionPropType } from "../../modules/types";
+import DockedEbikeRouteOptionDetails from "./DockedEbikeRouteOptionDetails";
 
-export default function DockedEbikeRouteOption(props) {
-  const nStationsFrom = props.fromDockingStations.length;
-  const nStationsTo = props.toDockingStations.length;
+export default function DockedEbikeRouteOption({
+  routeOption,
+  isSelected,
+  onClick,
+  onStartingPointStationChange,
+  onDestinationStationChange,
+}) {
+  const fromDockingStations = routeOption.nearByStations.startingPoint;
+  const toDockingStations = routeOption.nearByStations.destination;
+  const fromDockingStationId = routeOption.selectedStationIds.startingPoint;
+  const toDockingStationId = routeOption.selectedStationIds.destination;
 
-  const style = {
-    backgroundColor: props.isSelected ? "cyan" : "inherit",
-  };
+  function handleArticleClick(event) {
+    // Do not send click when clicking on an input element
+    if (event.target instanceof HTMLInputElement) {
+      return;
+    }
+    onClick();
+  }
 
   return (
-    <article onClick={props.onClick} style={style}>
+    <article
+      onClick={handleArticleClick}
+      style={{ backgroundColor: isSelected ? "cyan" : "inherit" }}
+      role="option"
+      aria-selected={isSelected}
+      aria-label={`Docked e-bike route option with ${routeOption.provider.name}.`}
+    >
       <header>
-        <h1>{props.provider.name}</h1>
+        <h1>{routeOption.provider.name}</h1>
       </header>
-      {nStationsFrom > 0 && nStationsTo > 0 ? (
-        <div style={{ display: "flex" }}>
-          <DockingStationSelector
-            label="From docking station"
-            stations={props.fromDockingStations}
-            onSelect={props.onFromDockingStationSelect}
-            style={{ flex: 1 }}
-          />
-          <DockingStationSelector
-            label="To docking station"
-            stations={props.toDockingStations}
-            onSelect={props.onToDockingStationSelect}
-            style={{ flex: 1 }}
-          />
+
+      {fromDockingStations.length > 0 && toDockingStations.length > 0 ? (
+        <div>
+          <div style={{ display: "flex" }}>
+            <DockingStationSelector
+              label="From docking station"
+              value={fromDockingStationId}
+              stations={fromDockingStations}
+              onChange={onStartingPointStationChange}
+              style={{ flex: 1 }}
+            />
+            <DockingStationSelector
+              label="To docking station"
+              value={toDockingStationId}
+              stations={toDockingStations}
+              onChange={onDestinationStationChange}
+              style={{ flex: 1 }}
+            />
+          </div>
+
+          {/* Render the details only if routeOption.details is not null and the option is selected */}
+          {isSelected && routeOption.details && (
+            <DockedEbikeRouteOptionDetails routeOption={routeOption} />
+          )}
         </div>
       ) : (
         <em>No nearby docking stations.</em>
@@ -38,50 +68,38 @@ export default function DockedEbikeRouteOption(props) {
 }
 
 DockedEbikeRouteOption.propTypes = {
-  provider: PropTypes.shape({
-    id: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
-  }),
-  fromDockingStations: PropTypes.arrayOf(
-    PropTypes.shape({
-      value: PropTypes.string.isRequired,
-      label: PropTypes.string.isRequired,
-    }),
-  ),
-  toDockingStations: PropTypes.arrayOf(
-    PropTypes.shape({
-      value: PropTypes.string.isRequired,
-      label: PropTypes.string.isRequired,
-    }),
-  ),
-  onFromDockingStationSelect: PropTypes.func.isRequired,
-  onToDockingStationSelect: PropTypes.func.isRequired,
+  routeOption: RouteOptionPropType,
   isSelected: PropTypes.bool.isRequired,
-  onClick: PropTypes.func.isRequired,
+  onClick: PropTypes.func.isRequired, // () => void
+  onStartingPointStationChange: PropTypes.func.isRequired, // (stationId) => void
+  onDestinationStationChange: PropTypes.func.isRequired, // (stationId) => void
 };
-
-DockedEbikeRouteOption.defaultProps = {
-  isSelected: false,
-};
-
-DockedEbikeRouteOption.TYPE = "docked-ebike";
 
 /** Pre-condition: options.length > 0 */
-function DockingStationSelector({ label, stations, onSelect, style }) {
-  const [selectedStation, setSelectedStation] = useState(stations[0].id);
+function DockingStationSelector({ label, value, stations, onChange, style }) {
+  const labelId = useId();
 
   const handleChange = (e) => {
     let stationId = e.target.value;
-    setSelectedStation(stationId);
-    onSelect(stationId);
-  }
+    onChange(stationId);
+  };
 
   return (
     <div style={style}>
-      <label style={{ display: "block" }}>{label}</label>
-      <select value={selectedStation.id} onChange={handleChange}>
-        {stations.map((option) => (
-          <option value={option.id}>{option.name}</option>
+      <label style={{ display: "block" }} id={labelId}>
+        {label}
+      </label>
+      <select
+        value={value}
+        onChange={handleChange}
+        // Prevent DockedEbikeRouteOption 'onClick' when clicking on this select
+        onClick={(e) => e.stopPropagation()}
+        aria-labelledby={labelId}
+      >
+        {stations.map((station) => (
+          <option value={station.id} key={station.id}>
+            {station.name}
+          </option>
         ))}
       </select>
     </div>
@@ -90,12 +108,13 @@ function DockingStationSelector({ label, stations, onSelect, style }) {
 
 DockingStationSelector.propTypes = {
   label: PropTypes.string.isRequired,
+  value: PropTypes.string.isRequired,
   stations: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.string.isRequired,
       name: PropTypes.string.isRequired,
     }),
-  ),
-  onSelect: PropTypes.func.isRequired,
+  ).isRequired,
+  onChange: PropTypes.func.isRequired, // (dockingStationId) => void
   style: Style,
 };

@@ -1,5 +1,5 @@
 import React from "react";
-import {ApolloClient, ApolloProvider, InMemoryCache} from "@apollo/client";
+import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
 
 export function wrapWithApolloProvider(element) {
   const client = new ApolloClient({
@@ -7,5 +7,5 @@ export function wrapWithApolloProvider(element) {
     cache: new InMemoryCache(),
   });
 
-  return <ApolloProvider client={client}>{element}</ApolloProvider>
+  return <ApolloProvider client={client}>{element}</ApolloProvider>;
 }

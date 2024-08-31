@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "private": true,
   "description": "micro-commute",
-  "author": "Jordi",
+  "author": {
+    "name": "Jordi"
+  },
   "keywords": [
     "gatsby"
   ],
@@ -14,11 +16,14 @@
     "serve": "gatsby serve",
     "clean": "gatsby clean",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "test-storybook": "test-storybook",
+    "prepare": "husky install"
   },
   "dependencies": {
     "@apollo/client": "^3.11.4",
     "@esri/react-arcgis": "^5.2.0",
+    "@reduxjs/toolkit": "^2.2.7",
     "esri-leaflet": "^3.0.12",
     "esri-leaflet-geocoder": "^3.1.4",
     "gatsby": "^5.13.5",
@@ -29,10 +34,12 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-leaflet": "^4.2.1",
+    "react-redux": "^9.1.2",
     "sass": "^1.77.8"
   },
   "devDependencies": {
     "@chromatic-com/storybook": "^1.6.1",
+    "@playwright/test": "^1.46.1",
     "@storybook/addon-essentials": "^8.2.2",
     "@storybook/addon-interactions": "^8.2.2",
     "@storybook/addon-links": "^8.2.2",
@@ -42,9 +49,18 @@
     "@storybook/react": "^8.2.2",
     "@storybook/react-webpack5": "^8.2.2",
     "@storybook/test": "^8.2.2",
+    "@storybook/test-runner": "^0.19.1",
+    "chromatic": "^11.7.1",
+    "husky": "^9.1.4",
+    "lint-staged": "^15.2.8",
+    "prettier": "3.3.3",
     "prop-types": "^15.8.1",
     "react-style-proptype": "^3.2.2",
     "storybook": "^8.2.2",
-    "storybook-addon-apollo-client": "^7.3.0"
+    "storybook-addon-apollo-client": "^7.3.0",
+    "storybook-addon-mock": "^5.0.0"
+  },
+  "lint-staged": {
+    "*.{js,css,md}": "prettier --write"
   }
 }

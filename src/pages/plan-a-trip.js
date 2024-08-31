@@ -1,127 +1,86 @@
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import RouteMap from "../components/RouteMap/RouteMap";
 import RouteInputForm from "../components/RouteInputForm/RouteInputForm";
-import RouteOptionList from "../components/RouteOptionList/RouteOptionList";
-import { fn } from "@storybook/test";
-import { gql, useQuery } from "@apollo/client";
-
-export const LIST_ROUTE_OPTIONS_QUERY = gql`
-  query ListRouteOptions(
-    $startingPointLongitude: Float!
-    $startingPointLatitude: Float!
-    $destinationLongitude: Float!
-    $destinationLatitude: Float!
-  ) {
-    listRouteOptions(
-      startingPointLongitude: $startingPointLongitude
-      startingPointLatitude: $startingPointLatitude
-      destinationLongitude: $destinationLongitude
-      destinationLatitude: $destinationLatitude
-    ) {
-      ... on DockedEBikeRouteOption {
-        provider {
-          id
-          name
-        }
-        fromDockingStations {
-          id
-          name
-          location {
-            longitude
-            latitude
-          }
-        }
-        toDockingStations {
-          id
-          name
-          location {
-            longitude
-            latitude
-          }
-        }
-      }
-    }
-  }
-`;
+import { useApolloClient } from "@apollo/client";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  arriveByDateTimeChanged,
+  destinationChanged,
+  fetchRouteOptions,
+  selectArriveBy,
+  selectDestination,
+  selectNumberOfAvailableRouteOptions,
+  selectRouteOptionsLoadingStatus,
+  selectStartingPoint,
+  startingPointChanged,
+} from "../modules/planatrip/planATripSlice";
+import RouteOptionsContainer from "../components/RouteOptionContainer/RouteOptionContainer";
 
 export default function PlanATripPage() {
-  const [startingPoint, setStartingPoint] = useState(null);
-  const [destination, setDestination] = useState(null);
+  const dispatch = useDispatch();
+  const startingPoint = useSelector(selectStartingPoint);
+  const destination = useSelector(selectDestination);
+  const arriveBy = useSelector(selectArriveBy);
+  const loadingStatus = useSelector(selectRouteOptionsLoadingStatus);
+  const nRouteOptions = useSelector(selectNumberOfAvailableRouteOptions);
+  const graphQLClient = useApolloClient();
 
-  const { loading, error, data } = useQuery(LIST_ROUTE_OPTIONS_QUERY, {
-    variables: {
-      startingPointLongitude: startingPoint && startingPoint.longitude,
-      startingPointLatitude: startingPoint && startingPoint.latitude,
-      destinationLongitude: destination && destination.longitude,
-      destinationLatitude: destination && destination.latitude,
-    },
-    skip: !startingPoint || !destination,
-  });
-
-  function SidebarContent() {
-    if (loading) {
-      return <span>Loading...</span>;
-    }
-    if (error) {
-      return <span>An error occurred</span>;
-    }
-    if (data) {
-      return (
-        <RouteOptionList
-          routeOptionProps={createRouteOptionProps(data)}
-          onRouteOptionSelected={fn()}
-        />
+  useEffect(() => {
+    if (startingPoint && destination) {
+      dispatch(
+        fetchRouteOptions({
+          client: graphQLClient,
+          variables: {
+            startingPoint: startingPoint,
+            destination: destination,
+          },
+        }),
       );
     }
-    return <></>;
-  }
+  }, [dispatch, startingPoint, destination, graphQLClient]);
 
   return (
     <main style={{ height: "100vh" }}>
       <aside style={{ width: "350px", float: "left" }}>
         <RouteInputForm
-          onStartingPointChange={location => setStartingPoint(location.coordinates)}
-          onDestinationChange={location => setDestination(location.coordinates)}
+          startingPointValue={startingPoint}
+          onStartingPointChange={(location) => {
+            // noinspection JSCheckFunctionSignatures
+            dispatch(startingPointChanged(location));
+          }}
+          destinationValue={destination}
+          onDestinationChange={(location) => {
+            // noinspection JSCheckFunctionSignatures
+            dispatch(destinationChanged(location));
+          }}
+          arriveByDateTimeValue={arriveBy}
+          onArriveByDateTimeChange={(dateTime) => {
+            // noinspection JSCheckFunctionSignatures
+            dispatch(arriveByDateTimeChanged(dateTime));
+          }}
         />
-        <SidebarContent />
+        {(() => {
+          switch (loadingStatus) {
+            case "idle":
+              return <></>;
+            case "pending":
+              return <span>Loading...</span>;
+            case "failed":
+              return <span>An error occurred</span>;
+            case "succeeded":
+              return nRouteOptions > 0 ? (
+                <RouteOptionsContainer dispatch={dispatch} />
+              ) : (
+                <span>No route options</span>
+              );
+            default:
+              throw new TypeError(
+                `Unknown loading status: '${loadingStatus}'.`,
+              );
+          }
+        })()}
       </aside>
-      <RouteMap style={{ height: "100%" }}/>
+      <RouteMap style={{ height: "100%" }} />
     </main>
   );
-}
-
-function createRouteOptionProps(data) {
-  if (data) {
-    return data["listRouteOptions"]
-      .map((routeOption) => {
-        switch (routeOption["__typename"]) {
-          case "DockedEBikeRouteOption":
-            return createDockedEbikeRouteOptionProps(routeOption);
-          default:
-            console.log(`Unknown type: '${routeOption["__typename"]}'.`);
-            return null;
-        }
-      })
-      .filter((option) => option);
-  } else {
-    return [];
-  }
-}
-
-function createDockedEbikeRouteOptionProps(data) {
-  const mapDockingStation = (station) => ({
-    id: station["id"],
-    name: station["name"],
-  });
-
-  return {
-    type: "docked-ebike",
-    provider: {
-      id: data["provider"]["id"],
-      name: data["provider"]["name"],
-    },
-    fromDockingStations: data["fromDockingStations"].map(mapDockingStation),
-    toDockingStations: data["toDockingStations"].map(mapDockingStation),
-    onDockingStationChange: fn(),
-  };
 }
