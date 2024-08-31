@@ -23,6 +23,12 @@ function formatDuration(isoDuration) {
   return `${totalMinutes}m`;
 }
 
+function getColorBasedOnRatio(ratio) {
+  if (ratio < 0.2) return "red";
+  if (ratio < 0.8) return "orange";
+  return "green";
+}
+
 function DockedEbikeRouteOptionDetails({ routeOption }) {
   const {
     leaveAt,
@@ -33,7 +39,28 @@ function DockedEbikeRouteOptionDetails({ routeOption }) {
     walkingTimeFromStartingPoint,
     cyclingTimeStationToStation,
     walkingTimeToDestination,
+    usualAvailabilityAtBikePickupStation,
+    usualAvailabilityAtBikeDropOffStation,
   } = routeOption.details;
+
+  const pickupStationCapacity =
+    (usualAvailabilityAtBikePickupStation?.standardBikes || 0) +
+    (usualAvailabilityAtBikePickupStation?.electricBikes || 0) +
+    (usualAvailabilityAtBikePickupStation?.emptyDocks || 0);
+
+  const dropOffStationCapacity =
+    (usualAvailabilityAtBikeDropOffStation?.standardBikes || 0) +
+    (usualAvailabilityAtBikeDropOffStation?.electricBikes || 0) +
+    (usualAvailabilityAtBikeDropOffStation?.emptyDocks || 0);
+
+  const pickupRatio =
+    (usualAvailabilityAtBikePickupStation?.standardBikes +
+      usualAvailabilityAtBikePickupStation?.electricBikes) /
+    pickupStationCapacity;
+
+  const dropOffRatio =
+    (usualAvailabilityAtBikeDropOffStation?.emptyDocks || 0) /
+    dropOffStationCapacity;
 
   return (
     <div
@@ -42,7 +69,7 @@ function DockedEbikeRouteOptionDetails({ routeOption }) {
         borderTop: "1px solid #ccc",
         paddingTop: "16px",
         display: "grid",
-        gridTemplateColumns: "1fr 1fr 1fr",
+        gridTemplateColumns: "1fr 1fr 1fr 1fr",
         gridGap: "16px",
       }}
     >
@@ -84,7 +111,6 @@ function DockedEbikeRouteOptionDetails({ routeOption }) {
           <div>Total travel time</div>
           <div>{formatDuration(travelTimeTotal)}</div>
         </div>
-        <div style={{ marginTop: "8px" }}></div>
       </div>
 
       {/* Column 3 */}
@@ -96,6 +122,39 @@ function DockedEbikeRouteOptionDetails({ routeOption }) {
         <div style={{ marginTop: "8px" }}>
           <div>Park bike at</div>
           <div>{formatTimestamp(parkBikeAt)}</div>
+        </div>
+      </div>
+
+      {/* Column 4 */}
+      <div style={{ display: "flex", flexDirection: "column" }}>
+        <div>
+          <div>Usual availability</div>
+          <div>
+            {usualAvailabilityAtBikePickupStation?.standardBikes +
+              usualAvailabilityAtBikePickupStation?.electricBikes}{" "}
+            / {pickupStationCapacity} bikes{" "}
+            <span
+              style={{
+                color: getColorBasedOnRatio(pickupRatio),
+              }}
+            >
+              ●
+            </span>
+          </div>
+        </div>
+        <div style={{ marginTop: "8px" }}>
+          <div>Usual availability</div>
+          <div>
+            {usualAvailabilityAtBikeDropOffStation?.emptyDocks} /{" "}
+            {dropOffStationCapacity} empty docks{" "}
+            <span
+              style={{
+                color: getColorBasedOnRatio(dropOffRatio),
+              }}
+            >
+              ●
+            </span>
+          </div>
         </div>
       </div>
     </div>
@@ -113,6 +172,16 @@ DockedEbikeRouteOptionDetails.propTypes = {
       walkingTimeFromStartingPoint: PropTypes.string.isRequired,
       cyclingTimeStationToStation: PropTypes.string.isRequired,
       walkingTimeToDestination: PropTypes.string.isRequired,
+      usualAvailabilityAtBikePickupStation: PropTypes.shape({
+        standardBikes: PropTypes.number.isRequired,
+        electricBikes: PropTypes.number.isRequired,
+        emptyDocks: PropTypes.number.isRequired,
+      }),
+      usualAvailabilityAtBikeDropOffStation: PropTypes.shape({
+        standardBikes: PropTypes.number.isRequired,
+        electricBikes: PropTypes.number.isRequired,
+        emptyDocks: PropTypes.number.isRequired,
+      }),
     }).isRequired,
   }).isRequired,
 };
