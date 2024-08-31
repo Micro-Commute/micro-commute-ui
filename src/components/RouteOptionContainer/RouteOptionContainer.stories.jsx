@@ -43,6 +43,16 @@ const MockedState = {
           walkingTimeFromStartingPoint: "PT0H1M0S",
           cyclingTimeStationToStation: "PT0H10M0S",
           walkingTimeToDestination: "PT0H3M0S",
+          usualAvailabilityAtBikePickupStation: {
+            standardBikes: 23,
+            electricBikes: 4,
+            emptyDocks: 5,
+          },
+          usualAvailabilityAtBikeDropOffStation: {
+            standardBikes: 10,
+            electricBikes: 2,
+            emptyDocks: 8,
+          },
         },
       },
       {
@@ -71,6 +81,16 @@ const MockedState = {
           walkingTimeFromStartingPoint: "PT0H1M0S",
           cyclingTimeStationToStation: "PT0H10M0S",
           walkingTimeToDestination: "PT0H3M0S",
+          usualAvailabilityAtBikePickupStation: {
+            standardBikes: 23,
+            electricBikes: 4,
+            emptyDocks: 5,
+          },
+          usualAvailabilityAtBikeDropOffStation: {
+            standardBikes: 10,
+            electricBikes: 2,
+            emptyDocks: 8,
+          },
         },
       },
     ],
