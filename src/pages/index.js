@@ -28,10 +28,10 @@ const pageStyles = {
 
 const headingContainerStyles = {
   display: "flex",
-  flexDirection: "row", // Changed to row
+  flexDirection: "row",
   alignItems: "center",
   justifyContent: "center",
-  flexWrap: "wrap", // Allow wrapping of the tagline if necessary
+  flexWrap: "wrap",
   marginBottom: "3vw",
 };
 
@@ -39,16 +39,15 @@ const headingStyles = {
   marginTop: 0,
   marginBottom: 0,
   fontSize: "5vw",
-  // fontWeight: "bold", // Optional: Make the title bold
 };
 
 const headingAccentStyles = {
   color: "#663399",
-  fontSize: "2vw", // Smaller font size for the tagline
-  marginLeft: "1rem", // Add space between title and tagline
-  whiteSpace: "normal", // Ensure tagline wraps normally
-  textAlign: "left", // Align text to the left
-  lineHeight: 1.4, // Adjust line height for better readability
+  fontSize: "2vw",
+  marginLeft: "1rem",
+  whiteSpace: "normal",
+  textAlign: "left",
+  lineHeight: 1.4,
 };
 
 const paragraphStyles = {

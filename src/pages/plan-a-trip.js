@@ -20,27 +20,27 @@ import RouteOptionsContainer from "../components/RouteOptionContainer/RouteOptio
 const headingContainerSmallStyles = {
   display: "flex",
   flexDirection: "row",
-  alignItems: "center", // Vertically center items
-  marginBottom: "1rem", // Margin below the heading container
+  alignItems: "center",
+  marginBottom: "1rem",
 };
 
 const headingSmallStyles = {
   margin: 0,
-  fontSize: "2.5vw", // Font size for the title
+  fontSize: "2.5vw",
 };
 
 const headingAccentSmallStyles = {
   margin: 0,
   color: "#663399",
-  fontSize: "1.5vw", // Smaller font size for the subtitle
-  marginLeft: "1rem", // Space between the title and subtitle
+  fontSize: "1.5vw",
+  marginLeft: "1rem",
 };
 
 const verticalBarStyles = {
-  fontSize: "5vw", // Match the font size of the heading
-  lineHeight: 1, // Adjust the line height to match the heading
-  margin: "0 0.5rem", // Margin to add space around the vertical bar
-  height: "100%", // Make sure it stretches to the full height
+  fontSize: "5vw",
+  lineHeight: 1,
+  margin: "0 0.5rem",
+  height: "100%",
 };
 
 export default function PlanATripPage() {
@@ -122,7 +122,7 @@ export default function PlanATripPage() {
           }
         })()}
       </aside>
-      <RouteMap style={{ flex: 1 }} /> {/* Use flex to fill remaining space */}
+      <RouteMap style={{ flex: 1 }} />
     </main>
   );
 }
