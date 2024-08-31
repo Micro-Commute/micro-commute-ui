@@ -16,6 +16,33 @@ import {
 } from "../modules/planatrip/planATripSlice";
 import RouteOptionsContainer from "../components/RouteOptionContainer/RouteOptionContainer";
 
+// Define styles for the new section
+const headingContainerSmallStyles = {
+  display: "flex",
+  flexDirection: "row",
+  alignItems: "center", // Vertically center items
+  marginBottom: "1rem", // Margin below the heading container
+};
+
+const headingSmallStyles = {
+  margin: 0,
+  fontSize: "2.5vw", // Font size for the title
+};
+
+const headingAccentSmallStyles = {
+  margin: 0,
+  color: "#663399",
+  fontSize: "1.5vw", // Smaller font size for the subtitle
+  marginLeft: "1rem", // Space between the title and subtitle
+};
+
+const verticalBarStyles = {
+  fontSize: "5vw", // Match the font size of the heading
+  lineHeight: 1, // Adjust the line height to match the heading
+  margin: "0 0.5rem", // Margin to add space around the vertical bar
+  height: "100%", // Make sure it stretches to the full height
+};
+
 export default function PlanATripPage() {
   const dispatch = useDispatch();
   const startingPoint = useSelector(selectStartingPoint);
@@ -40,24 +67,39 @@ export default function PlanATripPage() {
   }, [dispatch, startingPoint, destination, graphQLClient]);
 
   return (
-    <main style={{ height: "100vh" }}>
-      <aside style={{ width: "350px", float: "left" }}>
+    <main
+      style={{
+        height: "100vh",
+        border: "2px solid #fff",
+        padding: "1rem",
+        boxSizing: "border-box",
+        display: "flex",
+        flexDirection: "row",
+      }}
+    >
+      <aside style={{ width: "24rem", marginRight: "1rem" }}>
+        <div style={headingContainerSmallStyles}>
+          <h1 style={headingSmallStyles}>Micro-Commute</h1>
+          <span style={verticalBarStyles}>|</span>
+          <span style={headingAccentSmallStyles}>
+            Solving the first and last mile problem.
+          </span>
+        </div>
+
         <RouteInputForm
           startingPointValue={startingPoint}
           onStartingPointChange={(location) => {
-            // noinspection JSCheckFunctionSignatures
             dispatch(startingPointChanged(location));
           }}
           destinationValue={destination}
           onDestinationChange={(location) => {
-            // noinspection JSCheckFunctionSignatures
             dispatch(destinationChanged(location));
           }}
           arriveByDateTimeValue={arriveBy}
           onArriveByDateTimeChange={(dateTime) => {
-            // noinspection JSCheckFunctionSignatures
             dispatch(arriveByDateTimeChanged(dateTime));
           }}
+          orientation={"column"}
         />
         {(() => {
           switch (loadingStatus) {
@@ -80,7 +122,7 @@ export default function PlanATripPage() {
           }
         })()}
       </aside>
-      <RouteMap style={{ height: "100%" }} />
+      <RouteMap style={{ flex: 1 }} /> {/* Use flex to fill remaining space */}
     </main>
   );
 }

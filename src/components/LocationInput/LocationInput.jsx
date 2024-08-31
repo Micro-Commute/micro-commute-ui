@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-
 import "leaflet/dist/leaflet.css";
 import "leaflet-geosearch/dist/geosearch.css";
 import PropTypes from "prop-types";
@@ -57,13 +56,13 @@ export default function LocationInput({
         value={(() => {
           switch (state) {
             case "idle":
-              return address;
+              return  address;
             case "edit":
               return searchTerm;
             default:
               throw new Error(`Unexpected state: ${state}`);
           }
-        })()}
+        } )()}
         onChange={handleTextInputChange}
         onBlur={() => setState("idle")}
         onFocus={() => setState("edit")}
@@ -96,7 +95,6 @@ LocationInput.propTypes = {
       longitude: PropTypes.number.isRequired,
     }),
   }),
-  // ({address:str,coordinates:{longitude:float,latitude:float}}) -> void
   onLocationChange: PropTypes.func.isRequired,
   searchDelayMillis: PropTypes.number.isRequired,
   ariaLabelledBy: PropTypes.string,
