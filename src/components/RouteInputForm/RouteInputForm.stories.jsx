@@ -17,7 +17,7 @@ export const Row = {
   },
   render: function (args) {
     const [arriveByDateTime, setArriveByDateTime] = useState(
-        args.arriveByDateTimeValue,
+      args.arriveByDateTimeValue,
     );
 
     function onArriveByDateTimeChange(datetime) {
@@ -26,13 +26,13 @@ export const Row = {
     }
 
     return (
-        <RouteInputForm
-            onStartingPointChange={args.onStartingPointChange}
-            onDestinationChange={args.onDestinationChange}
-            onArriveByDateTimeChange={onArriveByDateTimeChange}
-            arriveByDateTimeValue={arriveByDateTime}
-            orientation="row"
-        />
+      <RouteInputForm
+        onStartingPointChange={args.onStartingPointChange}
+        onDestinationChange={args.onDestinationChange}
+        onArriveByDateTimeChange={onArriveByDateTimeChange}
+        arriveByDateTimeValue={arriveByDateTime}
+        orientation="row"
+      />
     );
   },
 };
@@ -46,7 +46,7 @@ export const Column = {
   },
   render: function (args) {
     const [arriveByDateTime, setArriveByDateTime] = useState(
-        args.arriveByDateTimeValue,
+      args.arriveByDateTimeValue,
     );
 
     function onArriveByDateTimeChange(datetime) {
@@ -55,13 +55,13 @@ export const Column = {
     }
 
     return (
-        <RouteInputForm
-            onStartingPointChange={args.onStartingPointChange}
-            onDestinationChange={args.onDestinationChange}
-            onArriveByDateTimeChange={onArriveByDateTimeChange}
-            arriveByDateTimeValue={arriveByDateTime}
-            orientation="column"
-        />
+      <RouteInputForm
+        onStartingPointChange={args.onStartingPointChange}
+        onDestinationChange={args.onDestinationChange}
+        onArriveByDateTimeChange={onArriveByDateTimeChange}
+        arriveByDateTimeValue={arriveByDateTime}
+        orientation="column"
+      />
     );
   },
 };
