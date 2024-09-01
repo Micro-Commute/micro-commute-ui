@@ -56,3 +56,9 @@ export function sumDurations(durations) {
 
   return totalDuration.toISO();
 }
+
+/** Returns the first element of an array. */
+export const first = (arr) => arr[0];
+
+/** Returns the last element of an array. */
+export const last = (arr) => arr[arr.length - 1];

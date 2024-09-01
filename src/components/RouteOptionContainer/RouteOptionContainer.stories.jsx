@@ -3,7 +3,10 @@ import { Provider } from "react-redux";
 import { configureStore, createSlice } from "@reduxjs/toolkit";
 import RouteOptionsContainer from "./RouteOptionContainer";
 import { planATripSlice } from "../../modules/planatrip/planATripSlice";
-import {GET_DOCKED_EBIKE_ROUTE_OPTION_DETAILS_QUERY, LIST_ROUTE_OPTIONS_QUERY} from "../../modules/planatrip/graphql";
+import {
+  GET_DOCKED_EBIKE_ROUTE_OPTION_DETAILS_QUERY,
+  LIST_ROUTE_OPTIONS_QUERY,
+} from "../../modules/planatrip/graphql";
 
 const MockedState = {
   startingPoint: {
@@ -11,7 +14,7 @@ const MockedState = {
     coordinates: {
       longitude: 0,
       latitude: 0,
-    }
+    },
   },
   destination: {
     address: "Some address",
@@ -165,5 +168,5 @@ Default.parameters = {
         },
       },
     ],
-  }
-}
+  },
+};

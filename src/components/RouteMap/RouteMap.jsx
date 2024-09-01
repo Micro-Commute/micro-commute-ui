@@ -27,7 +27,7 @@ export default function RouteMap({ style }) {
       style={style}
       center={[51.505, -0.09]}
       zoom={13}
-      scrollWheelZoom={false}
+      scrollWheelZoom={true}
     >
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
