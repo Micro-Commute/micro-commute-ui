@@ -26,7 +26,7 @@ export default function PlanATripPage() {
   const graphQLClient = useApolloClient();
 
   useEffect(() => {
-    if (startingPoint && destination) {
+    if (startingPoint && destination && arriveBy) {
       dispatch(
         fetchRouteOptions({
           client: graphQLClient,
@@ -37,11 +37,11 @@ export default function PlanATripPage() {
         }),
       );
     }
-  }, [dispatch, startingPoint, destination, graphQLClient]);
+  }, [dispatch, startingPoint, destination, arriveBy, graphQLClient]);
 
   return (
     <main style={{ height: "100vh" }}>
-      <aside style={{ width: "350px", float: "left" }}>
+      <aside style={{ width: "600px", float: "left" }}>
         <RouteInputForm
           startingPointValue={startingPoint}
           onStartingPointChange={(location) => {

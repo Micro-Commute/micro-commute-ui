@@ -3,8 +3,14 @@ import {
   createSelector,
   createSlice,
 } from "@reduxjs/toolkit";
-import { LIST_ROUTE_OPTIONS_QUERY } from "./graphql";
+import {
+  GET_DOCKED_EBIKE_ROUTE_OPTION_DETAILS_QUERY,
+  LIST_ROUTE_OPTIONS_QUERY,
+} from "./graphql";
 import { TransportType } from "../types";
+import { ApolloClient } from "@apollo/client";
+import { addDurationToNaiveDateTime, sumDurations } from "../util";
+import { DateTime as LuxonDateTime, Duration as LuxonDuration } from "luxon";
 
 //////////////////////////////////
 // State JSDoc type definitions //
@@ -60,6 +66,10 @@ import { TransportType } from "../types";
  */
 
 /**
+ * @typedef GeoJSONFeatureCollection
+ */
+
+/**
  * @typedef {object} DockedEBikeRouteOptionDetails
  * @property {DateTime} leaveAt
  * @property {DateTime} arriveAt
@@ -69,6 +79,11 @@ import { TransportType } from "../types";
  * @property {Duration} walkingTimeFromStartingPoint
  * @property {Duration} cyclingTimeStationToStation
  * @property {Duration} walkingTimeToDestination
+ * @property {GeoJSONFeatureCollection} featureCollection
+ */
+
+/**
+ * @typedef {"idle"|"pending"|"succeeded"|"failed"} RouteOptionDetailsLoadingStatus
  */
 
 /**
@@ -78,6 +93,8 @@ import { TransportType } from "../types";
  * @property {{startingPoint:DockingStation[],destination:DockingStation[]}} nearByStations
  * @property {{startingPoint:string|null,destination:string|null}} selectedStationIds
  * @property {DockedEBikeRouteOptionDetails|null} details
+ * @property {RouteOptionDetailsLoadingStatus} loading
+ * @property {string|null} error
  */
 
 /**
@@ -91,12 +108,11 @@ import { TransportType } from "../types";
 // Redux state slice //
 ///////////////////////
 
-export const planATripSlice = createSlice({
-  name: "planATrip",
-  initialState: {
+function getInitialState() {
+  return {
     startingPoint: null,
     destination: null,
-    arriveBy: null,
+    arriveBy: nextMondayAt9AM(),
     providers: [],
     routeOptions: {
       loading: "idle",
@@ -104,7 +120,19 @@ export const planATripSlice = createSlice({
       entities: [],
       selectedEntityIndex: -1,
     },
-  },
+  };
+}
+
+function nextMondayAt9AM() {
+  const startOfWeek = LuxonDateTime.now().startOf("week");
+  const delta = LuxonDuration.fromObject({ days: 7, hours: 9 });
+  const nextMonday = startOfWeek.plus(delta);
+  return nextMonday.toFormat("yyyy-MM-dd'T'HH:mm");
+}
+
+export const planATripSlice = createSlice({
+  name: "planATrip",
+  initialState: getInitialState,
   reducers: {
     /**
      * @param {PlanATripState} state
@@ -166,6 +194,7 @@ export const planATripSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
+    // Fetch route options reducers
     builder.addCase(fetchRouteOptions.pending, (state, action) => {
       state.routeOptions.loading = "pending";
     });
@@ -181,6 +210,26 @@ export const planATripSlice = createSlice({
     builder.addCase(fetchRouteOptions.rejected, (state, action) => {
       state.routeOptions.loading = "failed";
       state.routeOptions.error = action["error"]["message"];
+    });
+    // Fetch route option details reducers
+    builder.addCase(fetchRouteOptionDetails.pending, (state, action) => {
+      const index = state.routeOptions.selectedEntityIndex;
+      const routeOption = state.routeOptions.entities[index];
+      routeOption.loading = "pending";
+    });
+    builder.addCase(fetchRouteOptionDetails.fulfilled, (state, action) => {
+      const index = state.routeOptions.selectedEntityIndex;
+      const routeOption = state.routeOptions.entities[index];
+      routeOption.details = mapDockedEbikeRouteOptionDetailsFromGraphQl(
+        action.payload.data,
+      );
+      routeOption.loading = "succeeded";
+    });
+    builder.addCase(fetchRouteOptionDetails.rejected, (state, action) => {
+      const index = state.routeOptions.selectedEntityIndex;
+      const routeOption = state.routeOptions.entities[index];
+      routeOption.loading = "failed";
+      routeOption.error = action["error"]["message"];
     });
   },
   selectors: {
@@ -290,6 +339,65 @@ export const fetchRouteOptions = createAsyncThunk(
   },
 );
 
+export const fetchRouteOptionDetails = createAsyncThunk(
+  `${planATripSlice.name}/fetchRouteOptionDetails`,
+  /**
+   * @param action {{client: ApolloClient, routeOption: DockedEBikeRouteOptionDTO}}
+   * @param thunkAPI
+   */
+  async ({ client, routeOption }, thunkAPI) => {
+    const state = thunkAPI.getState();
+    const startingPoint = selectStartingPoint(state);
+    const destination = selectDestination(state);
+    const arriveBy = selectArriveBy(state);
+    switch (routeOption.transportType) {
+      case TransportType.DOCKED_EBIKE:
+        return await fetchDockedEbikeRouteOptionDetails({
+          client: client,
+          routeOption: routeOption,
+          variables: {
+            startingPoint: startingPoint,
+            destination: destination,
+            arriveBy: arriveBy,
+          },
+        });
+      default:
+        throw new TypeError(
+          `Unknown transport type: '${routeOption.transportType}'.`,
+        );
+    }
+  },
+);
+
+/**
+ * @param action {{
+ *    client: ApolloClient,
+ *    routeOption: DockedEBikeRouteOptionDTO,
+ *    variables: {
+ *      startingPoint: Location,
+ *      destination: Location,
+ *      arriveBy: DateTime,
+ *    }
+ * }}
+ */
+async function fetchDockedEbikeRouteOptionDetails({
+  client,
+  routeOption,
+  variables,
+}) {
+  return client.query({
+    query: GET_DOCKED_EBIKE_ROUTE_OPTION_DETAILS_QUERY,
+    variables: {
+      providerId: routeOption.provider.id,
+      startingPoint: variables.startingPoint.coordinates,
+      destination: variables.destination.coordinates,
+      arriveBy: variables.arriveBy,
+      fromDockingStationId: routeOption.selectedStationIds.startingPoint,
+      toDockingStationId: routeOption.selectedStationIds.destination,
+    },
+  });
+}
+
 ///////////////
 // Selectors //
 ///////////////
@@ -300,6 +408,9 @@ export const fetchRouteOptions = createAsyncThunk(
  * @property {TransportType.DOCKED_EBIKE} transportType
  * @property {{startingPoint:DockingStation[],destination:DockingStation[]}} nearByStations
  * @property {{startingPoint:string|null,destination:string|null}} selectedStationIds
+ * @property {DockedEBikeRouteOptionDetails|null} details
+ * @property {RouteOptionDetailsLoadingStatus} loading
+ * @property {string|null} error
  */
 
 /**
@@ -314,6 +425,33 @@ export const selectRouteOptions = createSelector(
   (providers, entities) =>
     entities.map((entity) => mapRouteOptionForSelect(providers, entity)),
 );
+
+/**
+ * This selector is a bit hacky; it returns the selected route excluding the
+ * route details, which it assumes to be 'details', 'loading', and 'error',
+ * and which it sets to 'undefined' before returning.
+ *
+ * We introduced this selector as a quick way to depend on the "metadata" of
+ * the currently selected route option, without depending on its details. This
+ * allows us to create an effect to send out a request to the backend and get
+ * route option details without it entering an infinite loop.
+ *
+ * NOTE: This selector creates a new object on every call. Use 'shallowEqual'
+ * to avoid unnecessary re-renders.
+ *
+ * @param {{planATrip: PlanATripState}} state
+ * @return {DockedEBikeRouteOptionDTO|null}
+ */
+export function selectSelectedRouteOptionWithoutDetails(state) {
+  // noinspection JSCheckFunctionSignatures
+  const routeOption = selectSelectedRouteOption(state);
+  if (routeOption !== null) {
+    routeOption.details = undefined;
+    routeOption.loading = undefined;
+    routeOption.error = undefined;
+  }
+  return routeOption;
+}
 
 export const {
   selectStartingPoint,
@@ -377,26 +515,9 @@ function mapDockedEbikeRouteOptionFromGraphQl(data) {
       destination:
         data.toDockingStations.length > 0 ? data.toDockingStations[0].id : null,
     },
-    details: {
-      leaveAt: "2024-08-24T12:10",
-      arriveAt: "2024-08-24T12:24",
-      takeBikeAt: "2024-08-24T12:12",
-      parkBikeAt: "2024-08-24T12:22",
-      travelTimeTotal: "PT0H14M0S",
-      walkingTimeFromStartingPoint: "PT0H1M0S",
-      cyclingTimeStationToStation: "PT0H10M0S",
-      walkingTimeToDestination: "PT0H3M0S",
-      usualAvailabilityAtBikePickupStation: {
-        standardBikes: 23,
-        electricBikes: 4,
-        emptyDocks: 5,
-      },
-      usualAvailabilityAtBikeDropOffStation: {
-        standardBikes: 10,
-        electricBikes: 2,
-        emptyDocks: 8,
-      },
-    },
+    details: null,
+    loading: "idle",
+    error: null,
   };
 }
 
@@ -411,6 +532,8 @@ function mapRouteOptionForSelect(providers, entity) {
     nearByStations: entity.nearByStations,
     selectedStationIds: entity.selectedStationIds,
     details: entity.details,
+    loading: entity.loading,
+    error: entity.error,
   });
   switch (entity.transportType) {
     case TransportType.DOCKED_EBIKE:
@@ -418,4 +541,43 @@ function mapRouteOptionForSelect(providers, entity) {
     default:
       throw new TypeError(`Unknown transport type: '${entity.transportType}'.`);
   }
+}
+
+/** Maps docked ebike route option details from `GET_DOCKED_EBIKE_ROUTE_OPTION_DETAILS_QUERY` response to redux state. */
+function mapDockedEbikeRouteOptionDetailsFromGraphQl(data) {
+  const details = data["getDockedEbikeRouteOptionDetails"];
+  if (details.__typename !== "DockedEbikeRouteOptionDetails") {
+    throw new TypeError(`Unexpected type: ${details.__typename}.`);
+  }
+
+  const usualAvAtPickup = details.usualAvailabilityAtBikePickupStation;
+  const usualAvAtDropOff = details.usualAvailabilityAtBikeDropOffStation;
+
+  const totalTravelTime = sumDurations([
+    details.walkingTimeFromStartingPoint,
+    details.cyclingTimeStationToStation,
+    details.walkingTimeToDestination,
+  ]);
+
+  return {
+    leaveAt: details.leaveAt,
+    takeBikeAt: details.takeBikeAt,
+    parkBikeAt: details.parkBikeAt,
+    arriveAt: addDurationToNaiveDateTime(details.leaveAt, totalTravelTime),
+    travelTimeTotal: totalTravelTime,
+    walkingTimeFromStartingPoint: details.walkingTimeFromStartingPoint,
+    cyclingTimeStationToStation: details.cyclingTimeStationToStation,
+    walkingTimeToDestination: details.walkingTimeToDestination,
+    usualAvailabilityAtBikePickupStation: {
+      standardBikes: usualAvAtPickup.standardBikes,
+      electricBikes: usualAvAtPickup.electricBikes,
+      emptyDocks: usualAvAtPickup.emptyDocks,
+    },
+    usualAvailabilityAtBikeDropOffStation: {
+      standardBikes: usualAvAtDropOff.standardBikes,
+      electricBikes: usualAvAtDropOff.electricBikes,
+      emptyDocks: usualAvAtDropOff.emptyDocks,
+    },
+    featureCollection: JSON.parse(details.featureCollection),
+  };
 }

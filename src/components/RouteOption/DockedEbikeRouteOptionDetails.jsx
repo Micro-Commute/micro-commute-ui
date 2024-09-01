@@ -25,7 +25,7 @@ function formatDuration(isoDuration) {
 
 function getColorBasedOnRatio(ratio) {
   if (ratio < 0.2) return "red";
-  if (ratio < 0.8) return "orange";
+  if (ratio < 0.5) return "orange";
   return "green";
 }
 

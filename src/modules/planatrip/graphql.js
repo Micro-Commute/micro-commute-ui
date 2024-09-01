@@ -38,3 +38,41 @@ export const LIST_ROUTE_OPTIONS_QUERY = gql`
     }
   }
 `;
+
+export const GET_DOCKED_EBIKE_ROUTE_OPTION_DETAILS_QUERY = gql`
+  query GetDockedEbikeRouteOptionDetails(
+    $providerId: String!
+    $startingPoint: CoordinatesInput!
+    $destination: CoordinatesInput!
+    $arriveBy: DateTime!
+    $fromDockingStationId: String!
+    $toDockingStationId: String!
+  ) {
+    getDockedEbikeRouteOptionDetails(
+      providerId: $providerId
+      startingPoint: $startingPoint
+      destination: $destination
+      arriveBy: $arriveBy
+      fromDockingStationId: $fromDockingStationId
+      toDockingStationId: $toDockingStationId
+    ) {
+      leaveAt
+      takeBikeAt
+      parkBikeAt
+      walkingTimeFromStartingPoint
+      cyclingTimeStationToStation
+      walkingTimeToDestination
+      usualAvailabilityAtBikePickupStation {
+        standardBikes
+        electricBikes
+        emptyDocks
+      }
+      usualAvailabilityAtBikeDropOffStation {
+        standardBikes
+        electricBikes
+        emptyDocks
+      }
+      featureCollection
+    }
+  }
+`;
