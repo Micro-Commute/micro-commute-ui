@@ -3,8 +3,7 @@ import {
   createSelector,
   createSlice,
 } from "@reduxjs/toolkit";
-import { LIST_ROUTE_OPTIONS_QUERY } from "./graphql";
-import { TransportType } from "../types";
+import { DateTime as LuxonDateTime, Duration as LuxonDuration } from "luxon";
 
 //////////////////////////////////
 // State JSDoc type definitions //
@@ -91,12 +90,11 @@ import { TransportType } from "../types";
 // Redux state slice //
 ///////////////////////
 
-export const planATripSlice = createSlice({
-  name: "planATrip",
-  initialState: {
+function getInitialState() {
+  return {
     startingPoint: null,
     destination: null,
-    arriveBy: null,
+    arriveBy: nextMondayAt9AM(),
     providers: [],
     routeOptions: {
       loading: "idle",
@@ -104,7 +102,19 @@ export const planATripSlice = createSlice({
       entities: [],
       selectedEntityIndex: -1,
     },
-  },
+  };
+}
+
+function nextMondayAt9AM() {
+  const startOfWeek = LuxonDateTime.now().startOf("week");
+  const delta = LuxonDuration.fromObject({ days: 7, hours: 9 });
+  const nextMonday = startOfWeek.plus(delta);
+  return nextMonday.toFormat("yyyy-MM-dd'T'HH:mm");
+}
+
+export const planATripSlice = createSlice({
+  name: "planATrip",
+  initialState: getInitialState,
   reducers: {
     /**
      * @param {PlanATripState} state
