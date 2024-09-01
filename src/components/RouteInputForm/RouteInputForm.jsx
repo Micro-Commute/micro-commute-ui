@@ -65,7 +65,7 @@ RouteInputForm.propTypes = {
     }),
   }),
   onDestinationChange: PropTypes.func.isRequired,
-  arriveByDateTimeValue: PropTypes.string.isRequired,
+  arriveByDateTimeValue: PropTypes.string,
   onArriveByDateTimeChange: PropTypes.func.isRequired,
   orientation: PropTypes.oneOf(["column", "row"]).isRequired,
 };
