@@ -54,11 +54,27 @@ export default function DockedEbikeRouteOption({
               style={{ flex: 1 }}
             />
           </div>
-
-          {/* Render the details only if routeOption.details is not null and the option is selected */}
-          {isSelected && routeOption.details && (
-            <DockedEbikeRouteOptionDetails routeOption={routeOption} />
-          )}
+          {(() => {
+            if (!isSelected) {
+              return <></>;
+            }
+            switch (routeOption.loading) {
+              case "idle":
+                return <></>;
+              case "pending":
+                return <span>Loading...</span>;
+              case "succeeded":
+                return (
+                  <DockedEbikeRouteOptionDetails routeOption={routeOption} />
+                );
+              case "failed":
+                return <span>Failed to load.</span>;
+              default:
+                throw new TypeError(
+                  `Unknown loading status: '${routeOption.loading}'.`,
+                );
+            }
+          })()}
         </div>
       ) : (
         <em>No nearby docking stations.</em>
