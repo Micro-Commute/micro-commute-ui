@@ -408,6 +408,7 @@ async function fetchDockedEbikeRouteOptionDetails({
  * @property {TransportType.DOCKED_EBIKE} transportType
  * @property {{startingPoint:DockingStation[],destination:DockingStation[]}} nearByStations
  * @property {{startingPoint:string|null,destination:string|null}} selectedStationIds
+ * @property {DockedEBikeRouteOptionDetails|null} details
  * @property {RouteOptionDetailsLoadingStatus} loading
  * @property {string|null} error
  */

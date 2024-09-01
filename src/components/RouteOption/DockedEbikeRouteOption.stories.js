@@ -78,6 +78,8 @@ export const Selected = {
           emptyDocks: 8,
         },
       },
+      loading: "succeeded",
+      error: null,
     },
     isSelected: true,
   },
