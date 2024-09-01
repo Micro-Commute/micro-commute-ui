@@ -1,41 +1,98 @@
 import * as React from "react";
-import RouteMap from "../components/RouteMap/RouteMap";
-
-const pageStyles = {
-  color: "#232129",
-  padding: 96,
-  fontFamily: "-apple-system, Roboto, sans-serif, serif",
-};
-const headingStyles = {
-  marginTop: 0,
-  marginBottom: 64,
-  maxWidth: 320,
-};
-const headingAccentStyles = {
-  color: "#663399",
-};
-const paragraphStyles = {
-  marginBottom: 48,
-};
+import { useEffect } from "react";
+import {
+  arriveByDateTimeChanged,
+  destinationChanged,
+  fetchRouteOptions,
+  selectArriveBy,
+  selectDestination,
+  selectStartingPoint,
+  startingPointChanged,
+} from "../modules/planatrip/planATripSlice";
+import RouteInputForm from "../components/RouteInputForm/RouteInputForm";
+import { useDispatch, useSelector } from "react-redux";
+import { useApolloClient } from "@apollo/client";
+import { navigate } from "gatsby";
 
 const IndexPage = () => {
+  const dispatch = useDispatch();
+  const startingPoint = useSelector(selectStartingPoint);
+  const destination = useSelector(selectDestination);
+  const arriveBy = useSelector(selectArriveBy);
+  const graphQLClient = useApolloClient();
+
+  useEffect(() => {
+    if (startingPoint && destination) {
+      dispatch(
+        fetchRouteOptions({
+          client: graphQLClient,
+          variables: {
+            startingPoint: startingPoint,
+            destination: destination,
+          },
+        }),
+      );
+    }
+  }, [dispatch, startingPoint, destination, graphQLClient]);
+
   return (
-    <main style={pageStyles}>
-      <h1 style={headingStyles}>
-        Micro-Commute
-        <br />
-        <span style={headingAccentStyles}>
-          — shared mobility for your commute 🌱🚴🏡
+    <main
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        height: "100vh",
+        justifyContent: "center",
+        gap: "0.5rem",
+      }}
+    >
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          alignItems: "baseline",
+        }}
+      >
+        <h1 style={{ fontSize: "2rem" }}>Micro-Commute</h1>
+        <span style={{ fontSize: "1.2rem", marginLeft: "1rem" }}>
+          Solving the first and last mile problem.
         </span>
-      </h1>
-      <p style={paragraphStyles}>
-        Solving the first and last mile problem for urban commuters.
-      </p>
-      <RouteMap />
+      </div>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          alignItems: "flex-end",
+        }}
+      >
+        <RouteInputForm
+          startingPointValue={startingPoint}
+          onStartingPointChange={(location) => {
+            // noinspection JSCheckFunctionSignatures
+            dispatch(startingPointChanged(location));
+          }}
+          destinationValue={destination}
+          onDestinationChange={(location) => {
+            // noinspection JSCheckFunctionSignatures
+            dispatch(destinationChanged(location));
+          }}
+          arriveByDateTimeValue={arriveBy}
+          onArriveByDateTimeChange={(dateTime) => {
+            // noinspection JSCheckFunctionSignatures
+            dispatch(arriveByDateTimeChanged(dateTime));
+          }}
+          orientation="row"
+        />
+        <button
+          style={{ marginLeft: "0.5rem" }}
+          onClick={() => navigate("/plan-a-trip")}
+        >
+          Let's Go!
+        </button>
+      </div>
+      <p>Your local bike share options — simplified, personalized. 🌱🚴🏡</p>
     </main>
   );
 };
 
 export default IndexPage;
-
-export const Head = () => <title>Micro-Commute</title>;

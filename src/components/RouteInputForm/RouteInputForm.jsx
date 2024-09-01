@@ -10,9 +10,17 @@ const RouteInputForm = ({
   onDestinationChange,
   arriveByDateTimeValue,
   onArriveByDateTimeChange,
+  orientation,
 }) => {
   return (
-    <form>
+    <form
+      style={{
+        display: "flex",
+        alignItems: "stretch",
+        flexDirection: orientation,
+        gap: "0.5rem",
+      }}
+    >
       <div>
         <label id="starting-point-label">Starting point</label>
         <LocationInput
@@ -59,6 +67,7 @@ RouteInputForm.propTypes = {
   onDestinationChange: PropTypes.func.isRequired,
   arriveByDateTimeValue: PropTypes.string.isRequired,
   onArriveByDateTimeChange: PropTypes.func.isRequired,
+  orientation: PropTypes.oneOf(["column", "row"]).isRequired,
 };
 
 export default RouteInputForm;

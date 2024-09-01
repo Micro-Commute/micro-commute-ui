@@ -58,6 +58,7 @@ export default function PlanATripPage() {
             // noinspection JSCheckFunctionSignatures
             dispatch(arriveByDateTimeChanged(dateTime));
           }}
+          orientation="column"
         />
         {(() => {
           switch (loadingStatus) {
