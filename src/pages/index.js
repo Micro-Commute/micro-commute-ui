@@ -1,9 +1,7 @@
 import * as React from "react";
-import { useEffect } from "react";
 import {
   arriveByDateTimeChanged,
   destinationChanged,
-  fetchRouteOptions,
   selectArriveBy,
   selectDestination,
   selectStartingPoint,
@@ -11,7 +9,6 @@ import {
 } from "../modules/planatrip/planATripSlice";
 import RouteInputForm from "../components/RouteInputForm/RouteInputForm";
 import { useDispatch, useSelector } from "react-redux";
-import { useApolloClient } from "@apollo/client";
 import { navigate } from "gatsby";
 
 const IndexPage = () => {
@@ -19,21 +16,6 @@ const IndexPage = () => {
   const startingPoint = useSelector(selectStartingPoint);
   const destination = useSelector(selectDestination);
   const arriveBy = useSelector(selectArriveBy);
-  const graphQLClient = useApolloClient();
-
-  useEffect(() => {
-    if (startingPoint && destination) {
-      dispatch(
-        fetchRouteOptions({
-          client: graphQLClient,
-          variables: {
-            startingPoint: startingPoint,
-            destination: destination,
-          },
-        }),
-      );
-    }
-  }, [dispatch, startingPoint, destination, graphQLClient]);
 
   return (
     <main
