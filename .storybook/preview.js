@@ -1,3 +1,5 @@
+import "../src/styles/reset.css";
+
 /** @type { import('@storybook/react').Preview } */
 const preview = {
   parameters: {
