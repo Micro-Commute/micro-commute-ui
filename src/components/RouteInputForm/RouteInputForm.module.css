@@ -1,0 +1,19 @@
+.routeInputForm {
+  display: flex;
+  gap: 0.5rem;
+  align-items: stretch;
+}
+
+.routeInputForm.horizontal {
+  flex-direction: row;
+}
+
+.routeInputForm.vertical {
+  flex-direction: column;
+  padding: 0.5rem;
+}
+
+.routeInputForm label {
+  display: inline-block;
+  margin-bottom: 0.15rem;
+}

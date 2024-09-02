@@ -13,7 +13,7 @@ import { TransportType } from "../../modules/types";
 import DockedEbikeRouteOption from "../RouteOption/DockedEbikeRouteOption";
 import { useApolloClient } from "@apollo/client";
 
-function RouteOptionContainer({ dispatch }) {
+function RouteOptionContainer({ dispatch, style = undefined }) {
   const routeOptions = useSelector(selectRouteOptions);
   const selectedIndex = useSelector(selectSelectedRouteOptionIndex);
   const graphQLClient = useApolloClient();
@@ -34,7 +34,7 @@ function RouteOptionContainer({ dispatch }) {
   }, [dispatch, selectedRouteOption, graphQLClient]);
 
   return (
-    <div role="listbox">
+    <div role="listbox" style={style}>
       {routeOptions.map((routeOption, index) =>
         (() => {
           switch (routeOption.transportType) {

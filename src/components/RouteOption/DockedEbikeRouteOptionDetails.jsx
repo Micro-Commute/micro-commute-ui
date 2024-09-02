@@ -20,14 +20,13 @@ export default function DockedEbikeRouteOptionDetails({ routeOption }) {
   // Source: grid layout generated with https://cssgrid-generator.netlify.app/
   return (
     <div
-      className={styles.dockedEbikeRouteOptionDetails}
       style={{
         display: "grid",
         padding: "0.15rem 0 0.25rem 0.33rem",
         gridTemplateColumns: "0.90fr 0.65fr 0.5fr 0.8fr",
         gridTemplateRows: "repeat(2, 1fr)",
         gridColumnGap: "0px",
-        gridRowGap: "0.33em",
+        gridRowGap: "0.75em",
       }}
     >
       {/* Column 0 */}
@@ -41,13 +40,12 @@ export default function DockedEbikeRouteOptionDetails({ routeOption }) {
         style={{
           gridArea: "2 / 1 / 3 / 2",
           paddingLeft: "1rem",
-          marginTop: "-0.05rem",
         }}
       >
-        <div style={{ display: "flex", alignItems: "center" }}>
+        <div style={{ display: "flex", alignItems: "baseline" }}>
           <div style={{ textAlign: "center" }}>
             <div>🧍</div>
-            <div className={styles.smallLabel}>
+            <div className={styles.travelTimeBreakDownLabelContainer}>
               {formatDurationToHumanReadableWithMinutePrecision(
                 walkingTimeFromStartingPoint,
               )}
@@ -56,7 +54,7 @@ export default function DockedEbikeRouteOptionDetails({ routeOption }) {
           <div>{">"}</div>
           <div style={{ textAlign: "center" }}>
             <div>🚴</div>
-            <div className={styles.smallLabel}>
+            <div className={styles.travelTimeBreakDownLabelContainer}>
               {formatDurationToHumanReadableWithMinutePrecision(
                 cyclingTimeStationToStation,
               )}
@@ -65,7 +63,7 @@ export default function DockedEbikeRouteOptionDetails({ routeOption }) {
           <div>{">"}</div>
           <div style={{ textAlign: "center" }}>
             <div>🧍</div>
-            <div className={styles.smallLabel}>
+            <div className={styles.travelTimeBreakDownLabelContainer}>
               {formatDurationToHumanReadableWithMinutePrecision(
                 walkingTimeToDestination,
               )}

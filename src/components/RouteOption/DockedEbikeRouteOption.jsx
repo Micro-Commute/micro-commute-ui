@@ -4,6 +4,8 @@ import Style from "react-style-proptype";
 import { RouteOptionPropType } from "../../modules/types";
 import DockedEbikeRouteOptionDetails from "./DockedEbikeRouteOptionDetails";
 
+import * as dockedEbikeRouteOptionStyles from "./DockedEbikeRouteOption.module.css";
+
 export default function DockedEbikeRouteOption({
   routeOption,
   isSelected,
@@ -27,7 +29,13 @@ export default function DockedEbikeRouteOption({
   return (
     <article
       onClick={handleArticleClick}
-      style={{ backgroundColor: isSelected ? "cyan" : "inherit" }}
+      className={dockedEbikeRouteOptionStyles.dockedEbikeRouteOption}
+      style={{
+        borderLeftStyle: "solid",
+        borderLeftWidth: "8px",
+        borderLeftColor: isSelected ? "#1071e5" : "#dfe3e8",
+        padding: "0.5rem",
+      }}
       role="option"
       aria-selected={isSelected}
       aria-label={`Docked bike/e-bike route option with ${routeOption.provider.name}.`}
@@ -39,20 +47,22 @@ export default function DockedEbikeRouteOption({
 
       {fromDockingStations.length > 0 && toDockingStations.length > 0 ? (
         <div>
-          <div style={{ display: "flex" }}>
+          <div
+            className={
+              dockedEbikeRouteOptionStyles.dockingStationSelectorWrapper
+            }
+          >
             <DockingStationSelector
               label="From docking station"
               value={fromDockingStationId}
               stations={fromDockingStations}
               onChange={onStartingPointStationChange}
-              style={{ flex: 1 }}
             />
             <DockingStationSelector
               label="To docking station"
               value={toDockingStationId}
               stations={toDockingStations}
               onChange={onDestinationStationChange}
-              style={{ flex: 1 }}
             />
           </div>
           {(() => {
@@ -93,7 +103,7 @@ DockedEbikeRouteOption.propTypes = {
 };
 
 /** Pre-condition: options.length > 0 */
-function DockingStationSelector({ label, value, stations, onChange, style }) {
+function DockingStationSelector({ label, value, stations, onChange }) {
   const labelId = useId();
 
   const handleChange = (e) => {
@@ -102,8 +112,12 @@ function DockingStationSelector({ label, value, stations, onChange, style }) {
   };
 
   return (
-    <div style={style}>
-      <label style={{ display: "block" }} id={labelId}>
+    <div>
+      <label
+        style={{ display: "block" }}
+        className={dockedEbikeRouteOptionStyles.label}
+        id={labelId}
+      >
         {label}
       </label>
       <select

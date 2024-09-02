@@ -16,6 +16,8 @@ import {
 } from "../modules/planatrip/planATripSlice";
 import RouteOptionsContainer from "../components/RouteOptionContainer/RouteOptionContainer";
 
+import * as planATripStyles from "./plan-a-trip.module.css";
+
 export default function PlanATripPage() {
   const dispatch = useDispatch();
   const startingPoint = useSelector(selectStartingPoint);
@@ -40,7 +42,7 @@ export default function PlanATripPage() {
   }, [dispatch, startingPoint, destination, arriveBy, graphQLClient]);
 
   return (
-    <main style={{ height: "100vh" }}>
+    <main style={{ height: "100vh" }} className={planATripStyles.planATrip}>
       <aside style={{ width: "575px", float: "left" }}>
         <RouteInputForm
           startingPointValue={startingPoint}
@@ -59,7 +61,7 @@ export default function PlanATripPage() {
             dispatch(arriveByDateTimeChanged(dateTime));
           }}
           orientation="column"
-          styleOverrides={{ marginBottom: "1rem" }}
+          styleOverrides={{ backgroundColor: "white", marginBottom: "1rem" }}
         />
         {(() => {
           switch (loadingStatus) {
@@ -71,7 +73,10 @@ export default function PlanATripPage() {
               return <span>An error occurred</span>;
             case "succeeded":
               return nRouteOptions > 0 ? (
-                <RouteOptionsContainer dispatch={dispatch} />
+                <RouteOptionsContainer
+                  dispatch={dispatch}
+                  style={{ backgroundColor: "white" }}
+                />
               ) : (
                 <span>No route options</span>
               );
