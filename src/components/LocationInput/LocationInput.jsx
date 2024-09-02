@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import "leaflet/dist/leaflet.css";
 import "leaflet-geosearch/dist/geosearch.css";
@@ -34,7 +34,7 @@ export default function LocationInput({
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [ref])
+  }, [ref]);
 
   useEffect(() => {
     if (state === "edit") {

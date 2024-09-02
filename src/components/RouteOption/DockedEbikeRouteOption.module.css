@@ -1,17 +1,31 @@
-h1 {
+.dockedEbikeRouteOption h1 {
   font-size: 1.2rem;
   font-weight: bold;
-  margin-bottom: 0.1rem;
 }
 
-.dockedEbikeRouteOptionDetails strong {
+.dockedEbikeRouteOption header {
+  margin-bottom: 0.5rem;
+}
+
+.dockedEbikeRouteOption .dockingStationSelectorWrapper {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.dockedEbikeRouteOption .dockingStationSelectorWrapper > div {
+  flex: 1;
+}
+
+.dockedEbikeRouteOption strong {
   font-weight: bold;
 }
 
-.dockedEbikeRouteOptionDetails .label {
+.dockedEbikeRouteOption .label {
   font-size: 0.95rem;
 }
 
-.dockedEbikeRouteOptionDetails .smallLabel {
-  font-size: 0.85rem;
+.dockedEbikeRouteOption .travelTimeBreakDownLabelContainer {
+  font-size: 0.9rem;
+  padding-top: 0.15rem;
 }

@@ -3,6 +3,8 @@ import PropTypes from "prop-types";
 import LocationInput from "../LocationInput/LocationInput";
 import DateTimeInput from "../DateTimeInput/DateTimeInput";
 
+import * as routeInputFormStyles from "./RouteInputForm.module.css";
+
 const RouteInputForm = ({
   startingPointValue,
   onStartingPointChange,
@@ -13,14 +15,6 @@ const RouteInputForm = ({
   orientation,
   styleOverrides = undefined,
 }) => {
-  const formStyle = {
-    display: "flex",
-    gap: "0.5rem",
-    alignItems: "stretch",
-    flexDirection: orientation,
-    padding: orientation === "column" ? "0.5rem" : 0,
-  };
-
   const inputStyle =
     orientation === "column"
       ? {
@@ -29,13 +23,14 @@ const RouteInputForm = ({
         }
       : {};
 
+  let className = `${routeInputFormStyles.routeInputForm} `;
+  className +=
+    orientation === "column"
+      ? routeInputFormStyles.vertical
+      : routeInputFormStyles.horizontal;
+
   return (
-    <form
-      style={{
-        ...formStyle,
-        ...(styleOverrides || {}),
-      }}
-    >
+    <form className={className} style={styleOverrides}>
       <div>
         <label id="starting-point-label">Starting point</label>
         <LocationInput
@@ -55,7 +50,7 @@ const RouteInputForm = ({
         />
       </div>
       <div>
-        <label id="arrive-by-label">Arrive By</label>
+        <label id="arrive-by-label">Arrive by</label>
         <DateTimeInput
           value={arriveByDateTimeValue}
           onChange={onArriveByDateTimeChange}
