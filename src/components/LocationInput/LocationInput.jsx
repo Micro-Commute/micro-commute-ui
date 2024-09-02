@@ -11,6 +11,7 @@ export default function LocationInput({
   onLocationChange,
   searchDelayMillis = 500,
   ariaLabelledBy = null,
+  style = undefined,
 }) {
   const [searchTerm, setSearchTerm] = useState("");
   const [results, setResults] = useState([]);
@@ -54,6 +55,7 @@ export default function LocationInput({
       <input
         type="text"
         placeholder="Enter address"
+        style={style}
         value={(() => {
           switch (state) {
             case "idle":

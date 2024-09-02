@@ -11,7 +11,9 @@ const RouteInputForm = ({
   arriveByDateTimeValue,
   onArriveByDateTimeChange,
   orientation,
+  styleOverrides = undefined,
 }) => {
+  const inputWidth = orientation === "column" ? "250px" : undefined;
   return (
     <form
       style={{
@@ -19,6 +21,7 @@ const RouteInputForm = ({
         alignItems: "stretch",
         flexDirection: orientation,
         gap: "0.5rem",
+        ...(styleOverrides || {}),
       }}
     >
       <div>
@@ -27,6 +30,7 @@ const RouteInputForm = ({
           locationValue={startingPointValue}
           onLocationChange={onStartingPointChange}
           ariaLabelledBy="starting-point-label"
+          style={{width: inputWidth}}
         />
       </div>
       <div>
@@ -35,6 +39,7 @@ const RouteInputForm = ({
           locationValue={destinationValue}
           onLocationChange={onDestinationChange}
           ariaLabelledBy="destination-label"
+          style={{width: inputWidth }}
         />
       </div>
       <div>
@@ -42,6 +47,7 @@ const RouteInputForm = ({
         <DateTimeInput
           value={arriveByDateTimeValue}
           onChange={onArriveByDateTimeChange}
+          style={{width: inputWidth }}
         />
       </div>
     </form>
