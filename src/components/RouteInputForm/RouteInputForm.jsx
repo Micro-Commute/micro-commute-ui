@@ -14,6 +14,14 @@ const RouteInputForm = ({
   styleOverrides = undefined,
 }) => {
 
+  const formStyle = {
+    display: "flex",
+    gap: "0.5rem",
+    alignItems: "stretch",
+    flexDirection: orientation,
+    padding: orientation === "column" ? "0.5rem" : 0,
+  };
+
   const inputStyle = orientation === "column" ? {
     width: "100%",
     boxSizing: "border-box",
@@ -22,11 +30,7 @@ const RouteInputForm = ({
   return (
     <form
       style={{
-        display: "flex",
-        alignItems: "stretch",
-        flexDirection: orientation,
-        gap: "0.5rem",
-        padding: "0.5rem",
+        ...formStyle,
         ...(styleOverrides || {}),
       }}
     >

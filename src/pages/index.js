@@ -45,6 +45,7 @@ const IndexPage = () => {
           display: "flex",
           flexDirection: "row",
           alignItems: "flex-end",
+          padding: "0.5rem",
         }}
       >
         <RouteInputForm
