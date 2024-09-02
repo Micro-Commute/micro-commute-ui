@@ -149,15 +149,17 @@ Default.parameters = {
               cyclingTimeStationToStation: "PT23M34.8S",
               walkingTimeToDestination: "PT3M1.8S",
               usualAvailabilityAtBikePickupStation: {
-                standardBikes: 10,
-                electricBikes: 1,
-                emptyDocks: 0,
+                standardBikes: 12,
+                electricBikes: 2,
+                emptyDocks: 18,
+                totalDocks: 32,
                 __typename: "UsualDockingStationAvailability",
               },
               usualAvailabilityAtBikeDropOffStation: {
-                standardBikes: 4,
-                electricBikes: 0,
-                emptyDocks: 20,
+                standardBikes: 22,
+                electricBikes: 6,
+                emptyDocks: 4,
+                totalDocks: 32,
                 __typename: "UsualDockingStationAvailability",
               },
               // prettier-ignore

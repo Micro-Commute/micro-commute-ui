@@ -30,10 +30,11 @@ export default function DockedEbikeRouteOption({
       style={{ backgroundColor: isSelected ? "cyan" : "inherit" }}
       role="option"
       aria-selected={isSelected}
-      aria-label={`Docked e-bike route option with ${routeOption.provider.name}.`}
+      aria-label={`Docked bike/e-bike route option with ${routeOption.provider.name}.`}
     >
       <header>
-        <h1>{routeOption.provider.name}</h1>
+        <h1 style={{display: "inline"}}>{routeOption.provider.name}</h1>
+        <span style={{marginLeft: "0.2rem"}}>[ Bikes / e-bikes ]</span>
       </header>
 
       {fromDockingStations.length > 0 && toDockingStations.length > 0 ? (

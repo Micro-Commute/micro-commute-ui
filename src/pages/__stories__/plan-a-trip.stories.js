@@ -211,15 +211,17 @@ TestHappyPath.parameters = PreLoaded.parameters = {
               cyclingTimeStationToStation: "PT23M34.8S",
               walkingTimeToDestination: "PT3M1.8S",
               usualAvailabilityAtBikePickupStation: {
-                standardBikes: 10,
-                electricBikes: 1,
-                emptyDocks: 0,
+                standardBikes: 9,
+                electricBikes: 7,
+                emptyDocks: 3,
+                totalDocks: 19,
                 __typename: "UsualDockingStationAvailability",
               },
               usualAvailabilityAtBikeDropOffStation: {
-                standardBikes: 4,
-                electricBikes: 0,
-                emptyDocks: 20,
+                standardBikes: 17,
+                electricBikes: 3,
+                emptyDocks: 15,
+                totalDocks: 32,
                 __typename: "UsualDockingStationAvailability",
               },
               // prettier-ignore

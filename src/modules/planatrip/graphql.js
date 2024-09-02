@@ -66,11 +66,13 @@ export const GET_DOCKED_EBIKE_ROUTE_OPTION_DETAILS_QUERY = gql`
         standardBikes
         electricBikes
         emptyDocks
+        totalDocks
       }
       usualAvailabilityAtBikeDropOffStation {
         standardBikes
         electricBikes
         emptyDocks
+        totalDocks
       }
       featureCollection
     }
