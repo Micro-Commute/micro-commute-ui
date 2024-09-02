@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { formatDurationToHumanReadableWithMinutePrecision } from "../../modules/util";
 
 export default function DockedEbikeRouteOptionDetails({ routeOption }) {
   const {
@@ -41,17 +42,29 @@ export default function DockedEbikeRouteOptionDetails({ routeOption }) {
           <div style={{ display: "flex", alignItems: "center" }}>
             <div style={{ textAlign: "center" }}>
               <div>🧍</div>
-              <div>{formatDuration(walkingTimeFromStartingPoint)}</div>
+              <div>
+                {formatDurationToHumanReadableWithMinutePrecision(
+                  walkingTimeFromStartingPoint,
+                )}
+              </div>
             </div>
             <div style={{ margin: "0 8px" }}>{">"}</div>
             <div style={{ textAlign: "center" }}>
               <div>🚴</div>
-              <div>{formatDuration(cyclingTimeStationToStation)}</div>
+              <div>
+                {formatDurationToHumanReadableWithMinutePrecision(
+                  cyclingTimeStationToStation,
+                )}
+              </div>
             </div>
             <div style={{ margin: "0 8px" }}>{">"}</div>
             <div style={{ textAlign: "center" }}>
               <div>🧍</div>
-              <div>{formatDuration(walkingTimeToDestination)}</div>
+              <div>
+                {formatDurationToHumanReadableWithMinutePrecision(
+                  walkingTimeToDestination,
+                )}
+              </div>
             </div>
           </div>
         </div>
@@ -61,7 +74,9 @@ export default function DockedEbikeRouteOptionDetails({ routeOption }) {
       <div>
         <div>
           <div>Total travel time</div>
-          <div>{formatDuration(travelTimeTotal)}</div>
+          <div>
+            {formatDurationToHumanReadableWithMinutePrecision(travelTimeTotal)}
+          </div>
         </div>
       </div>
 
@@ -155,19 +170,6 @@ function formatTimestamp(isoString) {
   const ampm = hours >= 12 ? "pm" : "am";
   hours = hours % 12 || 12;
   return `${hours}:${minutes} ${ampm}`;
-}
-
-function formatDuration(isoDuration) {
-  const regex = /PT(\d+H)?(\d+M)?(\d+S)?/;
-  const matches = isoDuration.match(regex);
-
-  const hours = parseInt(matches[1]) || 0;
-  const minutes = parseInt(matches[2]) || 0;
-  const seconds = parseInt(matches[3]) || 0;
-
-  const totalMinutes = hours * 60 + minutes + Math.round(seconds / 60);
-
-  return `${totalMinutes}m`;
 }
 
 const SemaphoreThresholds = {

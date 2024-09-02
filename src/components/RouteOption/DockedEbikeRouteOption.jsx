@@ -33,8 +33,8 @@ export default function DockedEbikeRouteOption({
       aria-label={`Docked bike/e-bike route option with ${routeOption.provider.name}.`}
     >
       <header>
-        <h1 style={{display: "inline"}}>{routeOption.provider.name}</h1>
-        <span style={{marginLeft: "0.2rem"}}>[ Bikes / e-bikes ]</span>
+        <h1 style={{ display: "inline" }}>{routeOption.provider.name}</h1>
+        <span style={{ marginLeft: "0.2rem" }}>[ Bikes / e-bikes ]</span>
       </header>
 
       {fromDockingStations.length > 0 && toDockingStations.length > 0 ? (
