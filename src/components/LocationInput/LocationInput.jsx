@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useRef, useState} from "react";
 
 import "leaflet/dist/leaflet.css";
 import "leaflet-geosearch/dist/geosearch.css";
@@ -19,6 +19,22 @@ export default function LocationInput({
   const [results, setResults] = useState([]);
   const [state, setState] = useState("idle"); // One of [idle, edit]
   const address = locationValue ? locationValue.address : "";
+  const ref = useRef(null);
+
+  useEffect(() => {
+    // Source: https://stackoverflow.com/a/42234988/5508855
+    function handleClickOutside(event) {
+      if (ref.current && !ref.current.contains(event.target)) {
+        // Clear results when the user clicks outside the LocationInput without
+        // clicking on any of the suggestions, i.e., cancels the search
+        setResults([]);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [ref])
 
   useEffect(() => {
     if (state === "edit") {
@@ -53,7 +69,7 @@ export default function LocationInput({
   };
 
   return (
-    <div className={locationInputStyles.locationInput}>
+    <div className={locationInputStyles.locationInput} ref={ref}>
       <input
         type="text"
         placeholder="Enter address"
