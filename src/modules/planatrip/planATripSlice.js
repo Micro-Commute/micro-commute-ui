@@ -70,6 +70,14 @@ import { DateTime as LuxonDateTime, Duration as LuxonDuration } from "luxon";
  */
 
 /**
+ * @typedef {object} UsualDockingStationAvailability
+ * @property {int} standardBikes
+ * @property {int} electricBikes
+ * @property {int} emptyDocks
+ * @property {int} totalDocks
+ */
+
+/**
  * @typedef {object} DockedEBikeRouteOptionDetails
  * @property {DateTime} leaveAt
  * @property {DateTime} arriveAt
@@ -79,6 +87,8 @@ import { DateTime as LuxonDateTime, Duration as LuxonDuration } from "luxon";
  * @property {Duration} walkingTimeFromStartingPoint
  * @property {Duration} cyclingTimeStationToStation
  * @property {Duration} walkingTimeToDestination
+ * @property {UsualDockingStationAvailability|null} usualAvailabilityAtBikePickupStation
+ * @property {UsualDockingStationAvailability|null} usualAvailabilityAtBikeDropOffStation
  * @property {GeoJSONFeatureCollection} featureCollection
  */
 
@@ -572,11 +582,13 @@ function mapDockedEbikeRouteOptionDetailsFromGraphQl(data) {
       standardBikes: usualAvAtPickup.standardBikes,
       electricBikes: usualAvAtPickup.electricBikes,
       emptyDocks: usualAvAtPickup.emptyDocks,
+      totalDocks: usualAvAtPickup.totalDocks,
     },
     usualAvailabilityAtBikeDropOffStation: {
       standardBikes: usualAvAtDropOff.standardBikes,
       electricBikes: usualAvAtDropOff.electricBikes,
       emptyDocks: usualAvAtDropOff.emptyDocks,
+      totalDocks: usualAvAtDropOff.totalDocks,
     },
     featureCollection: JSON.parse(details.featureCollection),
   };

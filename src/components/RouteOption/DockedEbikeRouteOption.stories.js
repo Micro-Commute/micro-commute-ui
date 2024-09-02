@@ -68,15 +68,49 @@ export const Selected = {
         cyclingTimeStationToStation: "PT0H10M0S",
         walkingTimeToDestination: "PT0H3M0S",
         usualAvailabilityAtBikePickupStation: {
-          standardBikes: 23,
-          electricBikes: 4,
-          emptyDocks: 5,
+          standardBikes: 12,
+          electricBikes: 17,
+          emptyDocks: 3,
+          totalDocks: 32,
         },
         usualAvailabilityAtBikeDropOffStation: {
-          standardBikes: 10,
-          electricBikes: 2,
-          emptyDocks: 8,
+          standardBikes: 19,
+          electricBikes: 7,
+          emptyDocks: 6,
+          totalDocks: 32,
         },
+      },
+      loading: "succeeded",
+      error: null,
+    },
+    isSelected: true,
+  },
+};
+
+export const SelectedNoAvailabilityData = {
+  args: {
+    routeOption: {
+      provider: {
+        id: "some-provider",
+        name: "Some provider",
+      },
+      transportType: TransportType.DOCKED_EBIKE,
+      nearByStations: {
+        startingPoint: [
+          { id: "foo", name: "Foo street, 123" },
+          { id: "bar", name: "Bar street, 123" },
+          { id: "baz", name: "Baz street, 123" },
+        ],
+        destination: [{ id: "qux", name: "Qux street, 123" }],
+      },
+      selectedStationIds: {
+        startingPoint: "foo",
+        destination: "qux",
+      },
+      details: {
+        ...Selected.args.routeOption.details,
+        usualAvailabilityAtBikePickupStation: null,
+        usualAvailabilityAtBikeDropOffStation: null,
       },
       loading: "succeeded",
       error: null,
