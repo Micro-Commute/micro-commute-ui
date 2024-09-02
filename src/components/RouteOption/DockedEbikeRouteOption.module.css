@@ -1,0 +1,17 @@
+h1 {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 0.1rem;
+}
+
+.dockedEbikeRouteOptionDetails strong {
+  font-weight: bold;
+}
+
+.dockedEbikeRouteOptionDetails .label {
+  font-size: 0.95rem;
+}
+
+.dockedEbikeRouteOptionDetails .smallLabel {
+  font-size: 0.85rem;
+}
