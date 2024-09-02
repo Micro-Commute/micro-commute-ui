@@ -75,7 +75,7 @@ export default function LocationInput({
         aria-haspopup="listbox"
         aria-expanded={results.length > 0}
       />
-      {results.length > 0 && (
+      {state === "edit" && results.length > 0 && (
         <ResultBox results={results} onResultClick={handleResultClick} />
       )}
     </div>
