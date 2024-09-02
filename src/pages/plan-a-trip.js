@@ -41,7 +41,7 @@ export default function PlanATripPage() {
 
   return (
     <main style={{ height: "100vh" }}>
-      <aside style={{ width: "600px", float: "left" }}>
+      <aside style={{ width: "575px", float: "left" }}>
         <RouteInputForm
           startingPointValue={startingPoint}
           onStartingPointChange={(location) => {
@@ -59,6 +59,7 @@ export default function PlanATripPage() {
             dispatch(arriveByDateTimeChanged(dateTime));
           }}
           orientation="column"
+          styleOverrides={{ marginBottom: "1rem" }}
         />
         {(() => {
           switch (loadingStatus) {
