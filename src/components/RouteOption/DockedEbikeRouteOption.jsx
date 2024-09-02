@@ -112,7 +112,7 @@ function DockingStationSelector({ label, value, stations, onChange, style }) {
         // Prevent DockedEbikeRouteOption 'onClick' when clicking on this select
         onClick={(e) => e.stopPropagation()}
         aria-labelledby={labelId}
-        style={{width: "100%"}}
+        style={{ width: "100%" }}
       >
         {stations.map((station) => (
           <option value={station.id} key={station.id}>

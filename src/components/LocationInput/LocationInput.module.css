@@ -1,0 +1,21 @@
+.locationInput {
+  position: relative;
+}
+
+.locationInput .resultBox {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  z-index: 1;
+  border: 1px solid #928787;
+  background-color: white;
+}
+
+.locationInput .resultBox li {
+  padding: 0.5rem;
+  user-select: none;
+}
+
+.locationInput .resultBox li:hover {
+  background-color: #f8f8f8;
+}

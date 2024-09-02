@@ -33,9 +33,17 @@ export default function DockedEbikeRouteOptionDetails({ routeOption }) {
       {/* Column 0 */}
       <div style={{ gridArea: "1 / 1 / 2 / 2" }}>
         <div className={styles.label}>Departure and arrival times</div>
-        <div><strong>{`${formatTimestamp(leaveAt)} – ${formatTimestamp(arriveAt)}`}</strong></div>
+        <div>
+          <strong>{`${formatTimestamp(leaveAt)} – ${formatTimestamp(arriveAt)}`}</strong>
+        </div>
       </div>
-      <div style={{ gridArea: "2 / 1 / 3 / 2", paddingLeft: "1rem", marginTop: "-0.05rem" }}>
+      <div
+        style={{
+          gridArea: "2 / 1 / 3 / 2",
+          paddingLeft: "1rem",
+          marginTop: "-0.05rem",
+        }}
+      >
         <div style={{ display: "flex", alignItems: "center" }}>
           <div style={{ textAlign: "center" }}>
             <div>🧍</div>
@@ -79,12 +87,16 @@ export default function DockedEbikeRouteOptionDetails({ routeOption }) {
       {/* Column 2 */}
       <div style={{ gridArea: "1 / 3 / 2 / 4", textAlign: "center" }}>
         <div className={styles.label}>Take bike at</div>
-        <div><strong>{formatTimestamp(takeBikeAt)}</strong></div>
+        <div>
+          <strong>{formatTimestamp(takeBikeAt)}</strong>
+        </div>
       </div>
 
       <div style={{ gridArea: "2 / 3 / 3 / 4", textAlign: "center" }}>
         <div className={styles.label}>Park bike at</div>
-        <div><strong>{formatTimestamp(parkBikeAt)}</strong></div>
+        <div>
+          <strong>{formatTimestamp(parkBikeAt)}</strong>
+        </div>
       </div>
 
       {/* Column 4 */}

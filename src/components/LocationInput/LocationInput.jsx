@@ -6,6 +6,8 @@ import PropTypes from "prop-types";
 import { OpenStreetMapProvider } from "leaflet-geosearch";
 import { isDomAvailable } from "../../modules/util";
 
+import * as locationInputStyles from "./LocationInput.module.css";
+
 export default function LocationInput({
   locationValue,
   onLocationChange,
@@ -51,7 +53,7 @@ export default function LocationInput({
   };
 
   return (
-    <div>
+    <div className={locationInputStyles.locationInput}>
       <input
         type="text"
         placeholder="Enter address"
@@ -74,17 +76,7 @@ export default function LocationInput({
         aria-expanded={results.length > 0}
       />
       {results.length > 0 && (
-        <ol role="listbox" style={{ display: "block" }}>
-          {results.map((result, index) => (
-            <li
-              key={index}
-              role="option"
-              onClick={() => handleResultClick(result)}
-            >
-              {result.label}
-            </li>
-          ))}
-        </ol>
+        <ResultBox results={results} onResultClick={handleResultClick} />
       )}
     </div>
   );
@@ -107,3 +99,19 @@ LocationInput.propTypes = {
 LocationInput.defaultProps = {
   searchDelayMillis: 500,
 };
+
+function ResultBox({ results, onResultClick }) {
+  return (
+    <div style={{ width: "350px" }} className={locationInputStyles.resultBox}>
+      {results.length > 0 && (
+        <ol role="listbox" style={{ display: "block" }}>
+          {results.map((result, index) => (
+            <li key={index} role="option" onClick={() => onResultClick(result)}>
+              {result.label}
+            </li>
+          ))}
+        </ol>
+      )}
+    </div>
+  );
+}
